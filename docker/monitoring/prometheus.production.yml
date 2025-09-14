@@ -1,0 +1,125 @@
+# Prometheus Production Configuration for AlphaPlus
+# Comprehensive monitoring setup
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'alphapulse-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configuration
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  # AlphaPlus Backend API
+  - job_name: 'alphapulse-backend'
+    static_configs:
+      - targets: ['backend:8000']
+    scrape_interval: 10s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  # AlphaPlus Frontend
+  - job_name: 'alphapulse-frontend'
+    static_configs:
+      - targets: ['frontend:3000']
+    scrape_interval: 30s
+    metrics_path: /api/metrics
+    scrape_timeout: 10s
+
+  # PostgreSQL Database
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  # Redis Cache
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-master:6379']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  # Nginx Load Balancer
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:8080']
+    scrape_interval: 30s
+    metrics_path: /nginx_status
+    scrape_timeout: 10s
+
+  # Node Exporter (System Metrics)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 15s
+
+  # Docker Container Metrics
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['docker-exporter:9323']
+    scrape_interval: 30s
+
+  # Grafana
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['grafana:3000']
+    scrape_interval: 30s
+    metrics_path: /metrics
+    scrape_timeout: 10s
+
+  # Custom AlphaPlus Metrics
+  - job_name: 'alphapulse-trading'
+    static_configs:
+      - targets: ['backend:8000']
+    scrape_interval: 5s
+    metrics_path: /metrics/trading
+    scrape_timeout: 5s
+
+  - job_name: 'alphapulse-websocket'
+    static_configs:
+      - targets: ['backend:8000']
+    scrape_interval: 5s
+    metrics_path: /metrics/websocket
+    scrape_timeout: 5s
+
+  - job_name: 'alphapulse-ml'
+    static_configs:
+      - targets: ['backend:8000']
+    scrape_interval: 30s
+    metrics_path: /metrics/ml
+    scrape_timeout: 10s
+
+# Storage configuration
+storage:
+  tsdb:
+    retention.time: 30d
+    retention.size: 10GB
+    wal-compression: true
+
+# Remote write configuration (optional - for long-term storage)
+# remote_write:
+#   - url: "https://your-remote-storage.com/api/v1/write"
+#     basic_auth:
+#       username: "your-username"
+#       password: "your-password"

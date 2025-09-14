@@ -1,0 +1,28 @@
+{
+  "report_id": "regression_report_20250813063616182534",
+  "timestamp": "2025-08-13T06:36:16.182540",
+  "total_tests": 1,
+  "passed_tests": 0,
+  "degraded_tests": 0,
+  "improved_tests": 0,
+  "unknown_tests": 1,
+  "overall_score": 0.5,
+  "recommendations": [
+    "\u2753 1 tests have unclear results - investigate further",
+    "\ud83d\udcc8 Performance is stable - continue monitoring"
+  ],
+  "test_details": [
+    {
+      "test_id": "failed_20250813063616182502",
+      "test_name": "comprehensive_workflow_test",
+      "baseline_id": "baseline_comprehensive_workflow_v1",
+      "status": "unknown",
+      "degradation_score": 0.0,
+      "improvement_score": 0.0,
+      "timestamp": "2025-08-13T06:36:16.182523",
+      "metadata": {
+        "error": "Baseline baseline_comprehensive_workflow_v1 not found"
+      }
+    }
+  ]
+}

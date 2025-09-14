@@ -1,0 +1,28 @@
+﻿{
+    "enhanced_strategy_integration": {
+        "enable_in_memory_processing": true,
+        "enable_parallel_execution": true,
+        "enable_ensemble_learning": true,
+        "enable_market_microstructure": true,
+        "enable_adaptive_tuning": true,
+        "max_buffer_size": 1000,
+        "max_workers": 4,
+        "ensemble_retrain_interval_hours": 24
+    },
+    "in_memory_processor": {
+        "max_buffer_size": 1000,
+        "max_workers": 4,
+        "cache_ttl_seconds": 300
+    },
+    "parallel_executor": {
+        "max_process_workers": 4,
+        "max_thread_workers": 8,
+        "enable_process_pool": true,
+        "enable_thread_pool": true
+    },
+    "ensemble_manager": {
+        "model_save_path": "models/ensemble",
+        "min_training_samples": 100,
+        "retrain_interval_hours": 24
+    }
+}

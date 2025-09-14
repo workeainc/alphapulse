@@ -1,0 +1,33 @@
+================================================================================
+ALPHAPULSE BENCHMARK REPORT
+================================================================================
+Generated: 2025-08-12 19:17:56.204264
+Total scenarios: 2
+
+Benchmark Results Summary:
+--------------------------------------------------------------------------------
+Scenario                  Type            Time (ms)    Throughput   Memory (MB)  CPU %   
+--------------------------------------------------------------------------------
+Single Symbol Basic       single_symbol   13741.12     0.07         73.2         78.0    
+Multi-Symbol Small        multi_symbol    13810.49     0.07         76.1         78.0    
+
+Detailed Results - Single Symbol Basic:
+----------------------------------------
+  Description: One contract, one timeframe, 1 year data
+  Total time: 687.0560s
+  Avg time per iteration: 13.7411s
+  Throughput: 0.07 ops/sec
+  Memory usage: 73.2 MB (peak: 76.1 MB)
+  CPU usage: 78.0% (avg: 96.0%)
+
+Detailed Results - Multi-Symbol Small:
+----------------------------------------
+  Description: 10 symbols, parallel processing
+  Total time: 276.2097s
+  Avg time per iteration: 13.8105s
+  Throughput: 0.07 ops/sec
+  Memory usage: 76.1 MB (peak: 76.2 MB)
+  CPU usage: 78.0% (avg: 102.2%)
+  Scaling efficiency: 10.00x
+
+================================================================================

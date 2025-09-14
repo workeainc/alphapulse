@@ -1,0 +1,63 @@
+{
+  "test_timestamp": "2025-08-21T02:23:33.086354",
+  "success_rate": 100.0,
+  "total_tests": 5,
+  "successful_tests": 5,
+  "failed_tests": 0,
+  "test_results": {
+    "news_processing": {
+      "success": true,
+      "articles_processed": 2,
+      "breaking_news_detected": 0
+    },
+    "timescaledb_storage": {
+      "success": true,
+      "news_articles_stored": 2,
+      "breaking_alerts_stored": 2,
+      "chunks_info": [
+        {
+          "hypertable_name": "breaking_news_alerts",
+          "chunk_count": 1
+        },
+        {
+          "hypertable_name": "raw_news_content",
+          "chunk_count": 2
+        }
+      ]
+    },
+    "breaking_news_detection": {
+      "success": true,
+      "test_articles": 1,
+      "breaking_news_detected": 1
+    },
+    "timeseries_queries": {
+      "success": true,
+      "time_bucket_test": {
+        "duration_ms": 4.0600000000000005,
+        "buckets_returned": 2
+      },
+      "first_last_test": {
+        "duration_ms": 2.144,
+        "first_article": "Test News Article"
+      },
+      "moving_average_test": {
+        "duration_ms": 0.859,
+        "data_points": 4
+      }
+    },
+    "bulk_performance": {
+      "success": true,
+      "processing_cycles": 3,
+      "total_articles_processed": 6,
+      "total_duration_seconds": 0.00663,
+      "articles_per_second": 904.9773755656109,
+      "complex_query_duration_ms": 0.9909999999999999,
+      "sources_analyzed": 1
+    }
+  },
+  "summary": {
+    "timescaledb_integration": "EXCELLENT",
+    "performance_rating": "OPTIMAL",
+    "breaking_news_detection": "FUNCTIONAL"
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "test_summary": {
+    "total_tests": 16,
+    "passed_tests": 8,
+    "failed_tests": 8,
+    "success_rate": "50.0%",
+    "overall_status": "FAIL"
+  },
+  "test_results": {
+    "real_data_service": {
+      "market_data": {
+        "status": "FAIL",
+        "data": null
+      },
+      "sentiment_data": {
+        "status": "FAIL",
+        "count": 0
+      },
+      "technical_data": {
+        "status": "FAIL",
+        "data": null
+      },
+      "analysis_data": {
+        "status": "PASS",
+        "has_fundamental": false,
+        "has_technical": false,
+        "has_sentiment": false
+      },
+      "confidence_data": {
+        "status": "PASS",
+        "confidence": 0.5
+      }
+    },
+    "ai_model_service": {
+      "signal_generation": {
+        "status": "FAIL",
+        "signal": null
+      }
+    },
+    "external_api_service": {
+      "pipeline_status": {
+        "status": "PASS",
+        "data": {
+          "pipeline_running": false,
+          "collection_stats": {},
+          "last_update": {},
+          "error": "'FreeAPIDataPipeline' object has no attribute 'get_pipeline_stats'",
+          "timestamp": "2025-09-14T20:25:02.073260+00:00"
+        }
+      },
+      "api_health": {
+        "status": "PASS",
+        "data": {
+          "overall_health": "unhealthy",
+          "healthy_apis": 0,
+          "total_apis": 4,
+          "api_status": {
+            "coingecko": {
+              "status": "error",
+              "error": "'FreeAPIManager' object has no attribute 'get_coingecko_data'",
+              "last_test": "2025-09-14T20:25:02.073269+00:00"
+            },
+            "cryptocompare": {
+              "status": "error",
+              "error": "'FreeAPIManager' object has no attribute 'get_cryptocompare_data'",
+              "last_test": "2025-09-14T20:25:02.073272+00:00"
+            },
+            "newsapi": {
+              "status": "error",
+              "error": "'FreeAPIManager' object has no attribute 'get_news_data'",
+              "last_test": "2025-09-14T20:25:02.073274+00:00"
+            },
+            "reddit": {
+              "status": "error",
+              "error": "'FreeAPIManager' object has no attribute 'get_reddit_data'",
+              "last_test": "2025-09-14T20:25:02.073275+00:00"
+            }
+          },
+          "timestamp": "2025-09-14T20:25:02.073280+00:00"
+        }
+      }
+    },
+    "signal_generator": {
+      "confidence_building": {
+        "status": "PASS",
+        "data": {
+          "symbol": "BTCUSDT",
+          "timeframe": "1h",
+          "current_confidence": 0.5,
+          "technical_confidence": 0.5,
+          "sentiment_confidence": 0.5,
+          "volume_confidence": 0.5,
+          "is_building": true,
+          "threshold_reached": false,
+          "confidence_factors": {
+            "technical": 0.5,
+            "sentiment": 0.5,
+            "volume": 0.5
+          },
+          "timestamp": "2025-09-14T20:25:02.073413+00:00",
+          "data_quality": 0.0
+        }
+      },
+      "signal_generation": {
+        "status": "FAIL",
+        "signal": null
+      }
+    },
+    "api_endpoints": {
+      "status": {
+        "status": "PASS",
+        "data": {
+          "status": "production_ready",
+          "phases_completed": [
+            "Phase 1: Real Data Integration",
+            "Phase 2: AI Model Integration",
+            "Phase 3: Streaming Infrastructure",
+            "Phase 4: Database Optimization",
+            "Phase 5: Security & Monitoring",
+            "Phase 6: Testing & Validation"
+          ],
+          "system_capabilities": {
+            "real_time_data": true,
+            "ai_decision_making": true,
+            "high_performance_streaming": true,
+            "database_optimization": true,
+            "security_monitoring": true,
+            "paper_trading": true,
+            "production_ready": true
+          },
+          "performance_metrics": {
+            "latency_target": "< 100ms",
+            "throughput_target": "1000+ msg/sec",
+            "ai_confidence_threshold": "70%+",
+            "consensus_requirement": "3+ model heads"
+          }
+        }
+      },
+      "analysis": {
+        "status": "FAIL",
+        "data": {
+          "detail": "'FreeAPIIntegrationService' object has no attribute 'get_comprehensive_signal_data'"
+        }
+      },
+      "confidence": {
+        "status": "FAIL",
+        "data": {
+          "detail": "'FreeAPIIntegrationService' object has no attribute 'get_enhanced_market_data'"
+        }
+      },
+      "signal": {
+        "status": "FAIL",
+        "data": {
+          "detail": "'FreeAPIIntegrationService' object has no attribute 'get_enhanced_sentiment'"
+        }
+      }
+    },
+    "websocket_streaming": {
+      "error": "403, message='Invalid response status', url='ws://localhost:8000/api/v1/streaming/BTCUSDT'"
+    },
+    "error_handling": {
+      "invalid_symbol": {
+        "status": "PASS",
+        "handled_gracefully": true
+      },
+      "invalid_timeframe": {
+        "status": "PASS",
+        "handled_gracefully": true
+      }
+    }
+  },
+  "timestamp": "2025-09-14T20:25:02.090182+00:00",
+  "recommendations": [
+    "Fix real_data_service.market_data - Unknown error",
+    "Fix real_data_service.sentiment_data - Unknown error",
+    "Fix real_data_service.technical_data - Unknown error",
+    "Fix ai_model_service.signal_generation - Unknown error",
+    "Fix signal_generator.signal_generation - Unknown error",
+    "Fix api_endpoints.analysis - Unknown error",
+    "Fix api_endpoints.confidence - Unknown error",
+    "Fix api_endpoints.signal - Unknown error"
+  ]
+}

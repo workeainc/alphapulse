@@ -1,0 +1,35 @@
+{
+  "config": {
+    "test_name": "comprehensive_workflow_test",
+    "scenario": "comprehensive_test",
+    "iterations": 2,
+    "warmup_iterations": 1,
+    "parallel_workers": 2
+  },
+  "individual_metrics": [
+    {
+      "timestamp": "2025-08-13T06:36:15.731949",
+      "execution_time_ms": 192.24047660827637,
+      "memory_usage_mb": 0.36328125,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 31.210908887965623,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "list"
+      }
+    },
+    {
+      "timestamp": "2025-08-13T06:36:16.064421",
+      "execution_time_ms": 216.0971164703369,
+      "memory_usage_mb": 0.375,
+      "cpu_utilization": 3.6,
+      "throughput_ops_per_sec": 27.765294132573974,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "list"
+      }
+    }
+  ]
+}

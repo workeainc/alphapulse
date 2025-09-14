@@ -1,0 +1,27 @@
+{
+  "report_id": "COMP_BTC_USDT_20250816_125307",
+  "report_type": "standard",
+  "symbol": "BTC/USDT",
+  "timestamp": "2025-08-17 12:53:07.494032+00:00",
+  "period_start": "2025-08-16 12:53:07.493390+00:00",
+  "period_end": "2025-08-17 12:53:07.493390+00:00",
+  "risk_metrics": {},
+  "position_data": {},
+  "stress_test_results": [],
+  "compliance_status": "compliant",
+  "recommendations": [
+    "Current operations appear compliant with risk parameters"
+  ],
+  "metadata": {
+    "generator": "AlphaPulse Compliance Reporter",
+    "version": "1.0.0",
+    "config": {
+      "reporting_frequency": "daily",
+      "retention_period": 365,
+      "risk_thresholds": {
+        "max_position_size": 0.1,
+        "max_portfolio_risk": 0.02
+      }
+    }
+  }
+}

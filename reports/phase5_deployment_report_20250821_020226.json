@@ -1,0 +1,25 @@
+{
+  "phase": "5",
+  "deployment_start": "2025-08-21T02:02:20.241094",
+  "components_tested": [
+    "database_migration",
+    "retraining_tables",
+    "self_training_orchestrator",
+    "kubernetes_integration",
+    "performance_monitoring"
+  ],
+  "success_count": 4,
+  "failure_count": 0,
+  "warnings": [
+    "Kubernetes cluster not accessible"
+  ],
+  "errors": [
+    "Database migration failed: Traceback (most recent call last):\n  File \"E:\\Emon Work\\AlphaPlus\\backend\\database\\migrations\\008_automated_retraining_tables_simple.py\", line 244, in <module>\n    print(\"\\u2705 Migration completed successfully\")\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Python313\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>\n",
+    "Enhanced ML models test: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> directly inherits TypingOnly but has additional attributes {'__static_attributes__', '__firstlineno__'}."
+  ],
+  "summary": {},
+  "deployment_end": "2025-08-21T02:02:26.582764",
+  "deployment_duration_seconds": 6.34167,
+  "total_components": 5,
+  "success_rate": 80.0
+}

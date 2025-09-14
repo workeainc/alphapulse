@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alphapulse-backend
+  namespace: alphapulse
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: alphapulse-backend
+  template:
+    metadata:
+      labels:
+        app: alphapulse-backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: backend
+        image: alphapulse/backend:latest
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8050
+          name: dashboard
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: REDIS_URL
+        - name: API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: API_HOST
+        - name: API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: API_PORT
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: DEBUG
+        - name: DASHBOARD_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: DASHBOARD_HOST
+        - name: DASHBOARD_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: DASHBOARD_PORT
+        - name: MAX_SYMBOLS
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: MAX_SYMBOLS
+        - name: MAX_PORTFOLIO_RISK
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: MAX_PORTFOLIO_RISK
+        - name: CACHE_TTL
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: CACHE_TTL
+        - name: WORKER_THREADS
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: WORKER_THREADS
+        - name: MAX_CONNECTIONS
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: MAX_CONNECTIONS
+        - name: REQUEST_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              name: alphapulse-config
+              key: REQUEST_TIMEOUT
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alphapulse-backend
+  namespace: alphapulse
+spec:
+  selector:
+    app: alphapulse-backend
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+  - name: dashboard
+    port: 8050
+    targetPort: 8050
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: alphapulse-backend-hpa
+  namespace: alphapulse
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: alphapulse-backend
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15

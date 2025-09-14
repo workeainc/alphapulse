@@ -1,0 +1,47 @@
+{
+  "config": {
+    "test_name": "single_symbol_detection_cold_start",
+    "scenario": "cold_start",
+    "iterations": 3,
+    "warmup_iterations": 0,
+    "parallel_workers": 2
+  },
+  "individual_metrics": [
+    {
+      "timestamp": "2025-08-13T06:28:26.629383",
+      "execution_time_ms": 51.270246505737305,
+      "memory_usage_mb": 0.7265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 19.504489799714477,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    },
+    {
+      "timestamp": "2025-08-13T06:28:26.794828",
+      "execution_time_ms": 50.81343650817871,
+      "memory_usage_mb": 0.7265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 19.679834089533472,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    },
+    {
+      "timestamp": "2025-08-13T06:28:26.954316",
+      "execution_time_ms": 50.621747970581055,
+      "memory_usage_mb": 0.7265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 19.75435539249163,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    }
+  ]
+}

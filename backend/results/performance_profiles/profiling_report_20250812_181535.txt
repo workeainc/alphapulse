@@ -1,0 +1,40 @@
+================================================================================
+ALPHAPULSE PROFILING REPORT
+================================================================================
+Generated: 2025-08-12 18:15:35.450732
+Total profiling sessions: 5
+
+CProfile Results:
+----------------------------------------
+  function_profile:
+    Total time: 2.3339s
+    Total calls: 3761328
+    Avg time/call: 0.000001s
+
+  test_cpu_intensive:
+    Total time: 2.1871s
+    Total calls: 3762813
+    Avg time/call: 0.000001s
+
+  async_test:
+    Total time: 0.1639s
+    Total calls: 37200
+    Avg time/call: 0.000004s
+
+  decorator_test:
+    Total time: 0.0184s
+    Total calls: 22023
+    Avg time/call: 0.000001s
+
+  function_profile:
+    Total time: 0.0150s
+    Total calls: 22066
+    Avg time/call: 0.000001s
+
+System Performance Summary:
+----------------------------------------
+  Average CPU usage: 73.0%
+  Average memory usage: 70.6 MB
+  Peak memory usage: 71.4 MB
+
+================================================================================

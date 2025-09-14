@@ -1,0 +1,42 @@
+{
+  "total_tests": 7,
+  "passed_tests": 7,
+  "failed_tests": 0,
+  "test_details": [
+    {
+      "test": "Service Initialization",
+      "status": "PASSED",
+      "details": "Service initialized successfully with all components"
+    },
+    {
+      "test": "Actionable Signal Generation",
+      "status": "PASSED",
+      "details": "Generated valid signal: hold with 0.762 confidence"
+    },
+    {
+      "test": "Multiple Symbols Test",
+      "status": "PASSED",
+      "details": "Generated signals for 3 symbols successfully"
+    },
+    {
+      "test": "Risk Analysis",
+      "status": "PASSED",
+      "details": "Risk analysis completed with overall risk score: 60.08"
+    },
+    {
+      "test": "Market Regime Detection",
+      "status": "PASSED",
+      "details": "Market regime detection working for all scenarios"
+    },
+    {
+      "test": "Position Sizing",
+      "status": "PASSED",
+      "details": "Position sizing calculations working correctly"
+    },
+    {
+      "test": "Performance Metrics",
+      "status": "PASSED",
+      "details": "Performance metrics tracking working: 5 signals generated"
+    }
+  ]
+}

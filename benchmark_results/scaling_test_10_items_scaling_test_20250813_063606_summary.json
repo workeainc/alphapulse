@@ -1,0 +1,42 @@
+{
+  "benchmark_id": "benchmark_20250813063606258471",
+  "test_name": "scaling_test_10_items",
+  "scenario": "scaling_test",
+  "timestamp": "2025-08-13T06:36:06.258507",
+  "execution_time_ms": 51.03635787963867,
+  "memory_usage_mb": 0.373046875,
+  "cpu_utilization": 0.0,
+  "throughput_ops_per_sec": 195.94295469991133,
+  "metadata": {
+    "iterations": 2,
+    "total_iterations": 2,
+    "execution_time_stats": {
+      "mean": 51.03635787963867,
+      "median": 51.03635787963867,
+      "min": 50.79984664916992,
+      "max": 51.27286911010742,
+      "stdev": 0.33447738978245506
+    },
+    "memory_stats": {
+      "mean": 0.373046875,
+      "median": 0.373046875,
+      "min": 0.37109375,
+      "max": 0.375,
+      "stdev": 0.0027621358640099515
+    },
+    "cpu_stats": {
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "stdev": 0.0
+    },
+    "throughput_stats": {
+      "mean": 195.94295469991133,
+      "median": 195.94295469991133,
+      "min": 195.03492146158638,
+      "max": 196.85098793823627,
+      "stdev": 1.2841529207247009
+    }
+  }
+}

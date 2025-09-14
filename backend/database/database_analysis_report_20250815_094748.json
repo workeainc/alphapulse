@@ -1,0 +1,416 @@
+{
+  "timestamp": "2025-08-15T09:47:48.291926",
+  "database_url": "sqlite:///test_alphapulse.db",
+  "existing_tables_count": 4,
+  "required_tables_count": 3,
+  "existing_structure": {
+    "alembic_version": {
+      "columns": [
+        {
+          "name": "version_num",
+          "type": "VARCHAR(32)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 1
+        }
+      ],
+      "indexes": [],
+      "foreign_keys": []
+    },
+    "feedback": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "primary_key": 1
+        },
+        {
+          "name": "signal_id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "market_outcome",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_feedback_id",
+          "columns": [
+            "id"
+          ],
+          "unique": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "signal_id"
+          ],
+          "referred_table": "signals",
+          "referred_columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    "logs": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "primary_key": 1
+        },
+        {
+          "name": "pattern_type",
+          "type": "VARCHAR(50)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "confidence_score",
+          "type": "FLOAT",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "volume_context",
+          "type": "JSON",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "trend_context",
+          "type": "JSON",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_logs_id",
+          "columns": [
+            "id"
+          ],
+          "unique": 0
+        }
+      ],
+      "foreign_keys": []
+    },
+    "signals": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "default": null,
+          "primary_key": 1
+        },
+        {
+          "name": "symbol",
+          "type": "VARCHAR(20)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "timeframe",
+          "type": "VARCHAR(10)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "direction",
+          "type": "VARCHAR(10)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "confidence",
+          "type": "FLOAT",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "tp1",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "tp2",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "tp3",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "tp4",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "sl",
+          "type": "FLOAT",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false,
+          "default": null,
+          "primary_key": 0
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": null,
+          "primary_key": 0
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_signals_id",
+          "columns": [
+            "id"
+          ],
+          "unique": 0
+        }
+      ],
+      "foreign_keys": []
+    }
+  },
+  "required_structure": {
+    "signals": {
+      "description": "Trading signals table for storing generated signals",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "symbol",
+          "type": "VARCHAR(20)",
+          "nullable": false
+        },
+        {
+          "name": "timeframe",
+          "type": "VARCHAR(10)",
+          "nullable": false
+        },
+        {
+          "name": "direction",
+          "type": "VARCHAR(10)",
+          "nullable": false
+        },
+        {
+          "name": "confidence",
+          "type": "FLOAT",
+          "nullable": false
+        },
+        {
+          "name": "tp1",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp2",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp3",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp4",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "sl",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": "pending"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_signals_symbol_timeframe_timestamp",
+          "columns": [
+            "symbol",
+            "timeframe",
+            "timestamp"
+          ]
+        }
+      ]
+    },
+    "logs": {
+      "description": "False positive logs for signal validation feedback",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "pattern_type",
+          "type": "VARCHAR(50)",
+          "nullable": false
+        },
+        {
+          "name": "confidence_score",
+          "type": "FLOAT",
+          "nullable": false
+        },
+        {
+          "name": "volume_context",
+          "type": "JSON",
+          "nullable": true
+        },
+        {
+          "name": "trend_context",
+          "type": "JSON",
+          "nullable": true
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_logs_timestamp",
+          "columns": [
+            "timestamp"
+          ]
+        }
+      ]
+    },
+    "feedback": {
+      "description": "Signal feedback and outcomes",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "signal_id",
+          "type": "INTEGER",
+          "nullable": false
+        },
+        {
+          "name": "market_outcome",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true
+        }
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "signal_id"
+          ],
+          "referred_table": "signals",
+          "referred_columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "missing_tables": [],
+    "existing_tables": [
+      "signals",
+      "logs",
+      "feedback"
+    ],
+    "mismatched_tables": [],
+    "recommendations": []
+  },
+  "migration_plan": "",
+  "summary": {
+    "total_tables": 4,
+    "missing_tables": 0,
+    "mismatched_tables": 0,
+    "compatible_tables": 3
+  }
+}

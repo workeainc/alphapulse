@@ -1,0 +1,4 @@
+Performance Profile Summary
+Generated: 2025-08-13 06:36:05.239565
+Sort by: cumulative
+

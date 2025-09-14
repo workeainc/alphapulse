@@ -1,0 +1,101 @@
+{
+  "test_suite": "Closed-Loop Monitoring System",
+  "tests": [
+    {
+      "name": "Monitoring Alert - Drift Alert Creation",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.716573"
+    },
+    {
+      "name": "Monitoring Alert - Performance Alert Creation",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.717018"
+    },
+    {
+      "name": "Monitoring Alert - Risk Alert Creation",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.717439"
+    },
+    {
+      "name": "Closed-Loop Action - Retraining Action",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.717948"
+    },
+    {
+      "name": "Closed-Loop Action - Shadow Deployment Action",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.718424"
+    },
+    {
+      "name": "Closed-Loop Action - Rollback Action",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.718827"
+    },
+    {
+      "name": "Automated Response Rule - Drift Retraining Rule",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.719291"
+    },
+    {
+      "name": "Automated Response Rule - Performance Degradation Rule",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.719660"
+    },
+    {
+      "name": "Automated Response Rule - Risk Alert Rule",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.720018"
+    },
+    {
+      "name": "Feedback Loop Metrics - Drift Loop Metrics",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.720505"
+    },
+    {
+      "name": "Feedback Loop Metrics - Performance Loop Metrics",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.720886"
+    },
+    {
+      "name": "Integration Setup",
+      "status": "passed",
+      "timestamp": "2025-08-23T15:36:50.759279"
+    },
+    {
+      "name": "Integration Activation",
+      "status": "passed",
+      "timestamp": "2025-08-23T15:36:50.759530"
+    },
+    {
+      "name": "Alert Creation and Trigger",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.760070"
+    },
+    {
+      "name": "Retraining Trigger - High Severity Drift Alert",
+      "status": "passed",
+      "timestamp": "2025-08-23T15:36:50.761224"
+    },
+    {
+      "name": "Retraining Trigger - Low Severity Performance Alert",
+      "status": "passed",
+      "timestamp": "2025-08-23T15:36:50.761504"
+    },
+    {
+      "name": "Retraining Trigger - Critical Risk Alert",
+      "status": "passed",
+      "timestamp": "2025-08-23T15:36:50.762423"
+    },
+    {
+      "name": "Feedback Loop Performance Analysis",
+      "status": "failed",
+      "timestamp": "2025-08-23T15:36:50.765070"
+    }
+  ],
+  "summary": {
+    "total_tests": 18,
+    "passed": 5,
+    "failed": 13,
+    "success_rate": 27.77777777777778
+  }
+}

@@ -1,0 +1,146 @@
+//@version=5
+indicator("AlphaPulse RSI Reversion Strategy", overlay=true)
+
+// Input parameters
+rsi_period = input.int(14, "RSI Period", minval=1)
+rsi_overbought = input.int(70, "RSI Overbought", minval=50, maxval=100)
+rsi_oversold = input.int(30, "RSI Oversold", minval=0, maxval=50)
+bb_period = input.int(20, "Bollinger Bands Period", minval=1)
+bb_std = input.float(2.0, "Bollinger Bands Std Dev", minval=0.1, maxval=5.0)
+stoch_period = input.int(14, "Stochastic Period", minval=1)
+williams_period = input.int(14, "Williams %R Period", minval=1)
+volume_threshold = input.float(0.8, "Volume Threshold", minval=0.1)
+
+// Calculate RSI
+rsi = ta.rsi(close, rsi_period)
+
+// Calculate Bollinger Bands
+[bb_upper, bb_middle, bb_lower] = ta.bb(close, bb_period, bb_std)
+
+// Calculate Stochastic Oscillator
+stoch_k = ta.stoch(close, high, low, stoch_period)
+stoch_d = ta.sma(stoch_k, 3)
+
+// Calculate Williams %R
+williams_r = ta.wpr(williams_period)
+
+// Volume analysis
+volume_avg = ta.sma(volume, 20)
+volume_ratio = volume / volume_avg
+
+// Mean reversion conditions
+rsi_oversold = rsi < rsi_oversold
+rsi_overbought = rsi > rsi_overbought
+bb_lower_touch = close <= bb_lower
+bb_upper_touch = close >= bb_upper
+stoch_oversold = stoch_k < 20
+stoch_overbought = stoch_k > 80
+williams_oversold = williams_r < -80
+williams_overbought = williams_r > -20
+
+// Divergence detection
+rsi_bullish_divergence = ta.lowest(low, 10) < ta.lowest(low, 10)[1] and ta.lowest(rsi, 10) > ta.lowest(rsi, 10)[1]
+rsi_bearish_divergence = ta.highest(high, 10) > ta.highest(high, 10)[1] and ta.highest(rsi, 10) < ta.highest(rsi, 10)[1]
+
+// Signal strength calculation
+rsi_strength = math.abs(rsi - 50) / 50
+bb_strength = math.abs(close - bb_middle) / (bb_upper - bb_middle)
+volume_strength = math.min(volume_ratio / volume_threshold, 2.0)
+
+// Signal generation
+buy_signal = false
+sell_signal = false
+signal_strength = 0.0
+
+// Buy signals (oversold conditions)
+if rsi_oversold and bb_lower_touch and volume_ratio > volume_threshold
+    buy_signal := true
+    signal_strength := math.min(rsi_strength * bb_strength * volume_strength, 1.0)
+
+if stoch_oversold and williams_oversold and volume_ratio > volume_threshold
+    buy_signal := true
+    signal_strength := math.max(signal_strength, 0.6)
+
+if rsi_bullish_divergence and volume_ratio > volume_threshold
+    buy_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+// Sell signals (overbought conditions)
+if rsi_overbought and bb_upper_touch and volume_ratio > volume_threshold
+    sell_signal := true
+    signal_strength := math.min(rsi_strength * bb_strength * volume_strength, 1.0)
+
+if stoch_overbought and williams_overbought and volume_ratio > volume_threshold
+    sell_signal := true
+    signal_strength := math.max(signal_strength, 0.6)
+
+if rsi_bearish_divergence and volume_ratio > volume_threshold
+    sell_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+// Signal classification
+signal_type = "hold"
+if buy_signal
+    signal_type := "buy"
+else if sell_signal
+    signal_type := "sell"
+
+// Signal strength classification
+strength_type = "weak"
+if signal_strength > 0.7
+    strength_type := "strong"
+else if signal_strength > 0.4
+    strength_type := "medium"
+
+// Plotting
+plot(bb_upper, "BB Upper", color=color.gray, linewidth=1)
+plot(bb_middle, "BB Middle", color=color.orange, linewidth=1)
+plot(bb_lower, "BB Lower", color=color.gray, linewidth=1)
+
+// Plot RSI levels on price chart
+rsi_high_level = ta.highest(close, 20) * 0.95
+rsi_low_level = ta.lowest(close, 20) * 1.05
+plot(rsi_overbought ? rsi_high_level : na, "RSI Overbought Level", color=color.red, linewidth=1, style=plot.style_line)
+plot(rsi_oversold ? rsi_low_level : na, "RSI Oversold Level", color=color.green, linewidth=1, style=plot.style_line)
+
+// Plot signals
+plotshape(buy_signal, "Buy Signal", shape.triangleup, location.belowbar, color.green, size=size.normal)
+plotshape(sell_signal, "Sell Signal", shape.triangledown, location.abovebar, color.red, size=size.normal)
+
+// Plot divergence
+plotshape(rsi_bullish_divergence, "Bullish Divergence", shape.diamond, location.belowbar, color.lime, size=size.small)
+plotshape(rsi_bearish_divergence, "Bearish Divergence", shape.diamond, location.abovebar, color.maroon, size=size.small)
+
+// Background color for RSI zones
+bgcolor(rsi_oversold ? color.new(color.green, 90) : rsi_overbought ? color.new(color.red, 90) : na)
+
+// RSI subplot
+rsi_plot = plot(rsi, "RSI", color=color.purple, display=display.none)
+hline(70, "RSI Overbought", color=color.red, display=display.none)
+hline(30, "RSI Oversold", color=color.green, display=display.none)
+
+// Alert conditions
+alertcondition(buy_signal, "RSI Reversion Buy Signal", "RSI Reversion buy signal generated for {{ticker}}")
+alertcondition(sell_signal, "RSI Reversion Sell Signal", "RSI Reversion sell signal generated for {{ticker}}")
+
+// Webhook data
+if buy_signal or sell_signal
+    webhook_data = {
+        "symbol": syminfo.ticker,
+        "signal": signal_type,
+        "price": close,
+        "strategy": "rsi_reversion",
+        "strength": strength_type,
+        "confidence": signal_strength,
+        "timestamp": time,
+        "metadata": {
+            "rsi": rsi,
+            "bb_upper": bb_upper,
+            "bb_lower": bb_lower,
+            "stoch_k": stoch_k,
+            "williams_r": williams_r,
+            "volume_ratio": volume_ratio,
+            "rsi_strength": rsi_strength,
+            "bb_strength": bb_strength
+        }
+    }

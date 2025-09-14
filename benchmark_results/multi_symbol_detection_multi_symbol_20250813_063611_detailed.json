@@ -1,0 +1,35 @@
+{
+  "config": {
+    "test_name": "multi_symbol_detection",
+    "scenario": "multi_symbol",
+    "iterations": 2,
+    "warmup_iterations": 1,
+    "parallel_workers": 4
+  },
+  "individual_metrics": [
+    {
+      "timestamp": "2025-08-13T06:36:11.593837",
+      "execution_time_ms": 104.22420501708984,
+      "memory_usage_mb": 0.265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 9.594700193069624,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    },
+    {
+      "timestamp": "2025-08-13T06:36:11.810204",
+      "execution_time_ms": 104.08568382263184,
+      "memory_usage_mb": 0.265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 9.607469185714907,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    }
+  ]
+}

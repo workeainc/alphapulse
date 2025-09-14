@@ -1,0 +1,147 @@
+//@version=5
+indicator("AlphaPulse Breakout Detector", overlay=true)
+
+// Input parameters
+support_resistance_periods = input.int(20, "Support/Resistance Periods", minval=5)
+volume_threshold = input.float(2.0, "Volume Threshold", minval=0.1)
+breakout_confirmation_periods = input.int(3, "Breakout Confirmation Periods", minval=1)
+false_breakout_filter = input.bool(true, "Filter False Breakouts", group="Filters")
+atr_period = input.int(14, "ATR Period", minval=1)
+consolidation_threshold = input.float(0.02, "Consolidation Threshold", minval=0.001)
+
+// Calculate ATR for volatility
+atr = ta.atr(atr_period)
+
+// Calculate support and resistance levels
+highest_high = ta.highest(high, support_resistance_periods)
+lowest_low = ta.lowest(low, support_resistance_periods)
+prev_highest = ta.highest(high, support_resistance_periods)[1]
+prev_lowest = ta.lowest(low, support_resistance_periods)[1]
+
+// Dynamic support and resistance
+resistance_level = highest_high
+support_level = lowest_low
+
+// Volume analysis
+volume_avg = ta.sma(volume, 20)
+volume_ratio = volume / volume_avg
+
+// Price range analysis
+price_range = (high - low) / close
+avg_price_range = ta.sma(price_range, 20)
+is_consolidating = price_range < consolidation_threshold
+
+// Breakout detection
+breakout_up = close > resistance_level and volume_ratio > volume_threshold
+breakout_down = close < support_level and volume_ratio > volume_threshold
+
+// False breakout detection
+false_breakout_up = breakout_up and close[1] <= resistance_level and close[breakout_confirmation_periods] <= resistance_level
+false_breakout_down = breakout_down and close[1] >= support_level and close[breakout_confirmation_periods] >= support_level
+
+// Momentum confirmation
+momentum_up = close > close[1] and close[1] > close[2]
+momentum_down = close < close[1] and close[1] < close[2]
+
+// Range expansion detection
+range_expansion_up = (high - low) > (high[1] - low[1]) * 1.5
+range_expansion_down = (high - low) > (high[1] - low[1]) * 1.5
+
+// Signal strength calculation
+breakout_strength = math.abs(close - (resistance_level + support_level) / 2) / atr
+volume_strength = math.min(volume_ratio / volume_threshold, 3.0)
+momentum_strength = math.abs(close - close[1]) / atr
+
+// Signal generation
+buy_signal = false
+sell_signal = false
+signal_strength = 0.0
+
+// Breakout signals
+if breakout_up and momentum_up and range_expansion_up
+    if not false_breakout_filter or not false_breakout_up
+        buy_signal := true
+        signal_strength := math.min(breakout_strength * volume_strength * momentum_strength, 1.0)
+
+if breakout_down and momentum_down and range_expansion_down
+    if not false_breakout_filter or not false_breakout_down
+        sell_signal := true
+        signal_strength := math.min(breakout_strength * volume_strength * momentum_strength, 1.0)
+
+// Consolidation breakout signals
+if is_consolidating and breakout_up and volume_ratio > volume_threshold * 1.5
+    buy_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+if is_consolidating and breakout_down and volume_ratio > volume_threshold * 1.5
+    sell_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+// Signal classification
+signal_type = "hold"
+if buy_signal
+    signal_type := "buy"
+else if sell_signal
+    signal_type := "sell"
+
+// Signal strength classification
+strength_type = "weak"
+if signal_strength > 0.7
+    strength_type := "strong"
+else if signal_strength > 0.4
+    strength_type := "medium"
+
+// Plotting
+plot(resistance_level, "Resistance", color=color.red, linewidth=2)
+plot(support_level, "Support", color=color.green, linewidth=2)
+
+// Plot consolidation zone
+consolidation_high = ta.highest(high, 10)
+consolidation_low = ta.lowest(low, 10)
+plot(is_consolidating ? consolidation_high : na, "Consolidation High", color=color.orange, linewidth=1, style=plot.style_line)
+plot(is_consolidating ? consolidation_low : na, "Consolidation Low", color=color.orange, linewidth=1, style=plot.style_line)
+
+// Plot signals
+plotshape(buy_signal, "Breakout Buy", shape.triangleup, location.belowbar, color.green, size=size.large)
+plotshape(sell_signal, "Breakout Sell", shape.triangledown, location.abovebar, color.red, size=size.large)
+
+// Plot false breakouts
+plotshape(false_breakout_up, "False Breakout Up", shape.xcross, location.abovebar, color.yellow, size=size.small)
+plotshape(false_breakout_down, "False Breakout Down", shape.xcross, location.belowbar, color.yellow, size=size.small)
+
+// Plot momentum
+plotshape(momentum_up and breakout_up, "Momentum Up", shape.circle, location.belowbar, color.lime, size=size.tiny)
+plotshape(momentum_down and breakout_down, "Momentum Down", shape.circle, location.abovebar, color.maroon, size=size.tiny)
+
+// Background color for consolidation
+bgcolor(is_consolidating ? color.new(color.blue, 90) : na)
+
+// Volume bars
+volume_color = volume_ratio > volume_threshold ? color.green : volume_ratio > volume_threshold * 0.5 ? color.yellow : color.gray
+plot(volume, "Volume", color=volume_color, display=display.none)
+
+// Alert conditions
+alertcondition(buy_signal, "Breakout Buy Signal", "Breakout buy signal generated for {{ticker}}")
+alertcondition(sell_signal, "Breakout Sell Signal", "Breakout sell signal generated for {{ticker}}")
+
+// Webhook data
+if buy_signal or sell_signal
+    webhook_data = {
+        "symbol": syminfo.ticker,
+        "signal": signal_type,
+        "price": close,
+        "strategy": "breakout_detector",
+        "strength": strength_type,
+        "confidence": signal_strength,
+        "timestamp": time,
+        "metadata": {
+            "resistance_level": resistance_level,
+            "support_level": support_level,
+            "volume_ratio": volume_ratio,
+            "breakout_strength": breakout_strength,
+            "momentum_strength": momentum_strength,
+            "is_consolidating": is_consolidating,
+            "atr": atr,
+            "price_range": price_range
+        }
+    }

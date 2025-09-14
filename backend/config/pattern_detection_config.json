@@ -1,0 +1,26 @@
+{
+  "max_workers": 12,
+  "buffer_size": 1500,
+  "cache_ttl_seconds": 300,
+  "max_cache_size": 10000,
+  "min_confidence_threshold": 0.3,
+  "min_pattern_strength": 0.2,
+  "volume_confirmation_threshold": 1.5,
+  "trend_alignment_weight": 0.1,
+  "enable_vectorization": true,
+  "enable_parallel_processing": true,
+  "enable_caching": true,
+  "enable_sliding_windows": true,
+  "max_memory_usage_mb": 2048,
+  "cleanup_interval_seconds": 3600,
+  "max_buffer_age_seconds": 7200,
+  "monitor_interval_seconds": 5,
+  "alert_thresholds": {
+    "processing_time_ms": 1000.0,
+    "memory_usage_mb": 2048.0,
+    "cpu_usage_percent": 80.0,
+    "cache_hit_rate": 0.3,
+    "error_rate": 0.05,
+    "patterns_per_second": 1000.0
+  }
+}

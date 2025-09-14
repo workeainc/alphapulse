@@ -1,0 +1,81 @@
+{
+  "phase": "4B",
+  "deployment_start": "2025-08-21T01:33:41.704470",
+  "components_tested": [
+    "ml_feature_tables",
+    "enhanced_ml_models",
+    "online_learning",
+    "drift_detection",
+    "self_training_orchestrator",
+    "model_management",
+    "prediction_serving",
+    "complete_pipeline"
+  ],
+  "success_count": 6,
+  "failure_count": 0,
+  "warnings": [
+    "Insufficient ML feature data",
+    "Online learning updates failed"
+  ],
+  "errors": [],
+  "summary": {},
+  "ml_feature_tables": {
+    "ml_features_ohlcv": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_features_sentiment": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_labels": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_models_metadata": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_predictions": {
+      "exists": true,
+      "record_count": 13812,
+      "has_data": true
+    }
+  },
+  "pipeline_test_result": {
+    "status": "success",
+    "total_samples": 200,
+    "stored_models": 3,
+    "results": {
+      "regime_change": {
+        "accuracy": 0.325,
+        "f1_score": 0.3143020594965675,
+        "model_path": "models/test_regime_change_model.pkl",
+        "training_samples": 160,
+        "test_samples": 40
+      },
+      "sector_rotation": {
+        "accuracy": 0.35,
+        "f1_score": 0.3534255599472991,
+        "model_path": "models/test_sector_rotation_model.pkl",
+        "training_samples": 160,
+        "test_samples": 40
+      },
+      "price_direction": {
+        "accuracy": 0.475,
+        "f1_score": 0.4461446360153257,
+        "model_path": "models/test_price_direction_model.pkl",
+        "training_samples": 160,
+        "test_samples": 40
+      }
+    }
+  },
+  "deployment_end": "2025-08-21T01:33:45.171894",
+  "deployment_duration_seconds": 3.467424,
+  "total_components": 8,
+  "success_rate": 75.0
+}

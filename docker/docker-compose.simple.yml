@@ -1,0 +1,142 @@
+# Simplified Docker Compose file for AlphaPlus Development
+# Focuses on core services: PostgreSQL, Redis, Backend, Frontend
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database with TimescaleDB extension
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: alphapulse_postgres_dev
+    environment:
+      POSTGRES_DB: alphapulse
+      POSTGRES_USER: alpha_emon
+      POSTGRES_PASSWORD: Emon_@17711
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alpha_emon -d alphapulse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache for session management and caching
+  redis:
+    image: redis:7-alpine
+    container_name: alphapulse_redis_dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - alphapulse_network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API Service
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/Dockerfile.backend.dev
+    container_name: alphapulse_backend_dev
+    environment:
+      # Database Configuration
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: alphapulse
+      DB_USER: alpha_emon
+      DB_PASSWORD: Emon_@17711
+      DATABASE_URL: postgresql://alpha_emon:Emon_@17711@postgres:5432/alphapulse
+      
+      # Redis Configuration
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_URL: redis://redis:6379
+      
+      # Application Configuration
+      DEBUG: "true"
+      LOG_LEVEL: INFO
+      APP_ENV: development
+      
+      # API Keys (using placeholder values for development)
+      BINANCE_API_KEY: your_binance_api_key_here
+      BINANCE_SECRET_KEY: your_binance_secret_key_here
+      COINGECKO_API_KEY: CG-QQcUzHcQwbnTC7pxLAwKdwBZ
+      NEWS_API_KEY: 9d9a3e710a0a454f8bcee7e4f04e3c24
+      
+      # CORS Settings
+      CORS_ORIGINS: "http://localhost:3000,http://frontend:3000"
+      
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - alphapulse_network
+    volumes:
+      - ../backend:/app
+      - /app/__pycache__
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Dashboard
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/Dockerfile.frontend.dev
+    container_name: alphapulse_frontend_dev
+    environment:
+      # Next.js Configuration
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_WS_URL: ws://localhost:8000
+      NEXT_TELEMETRY_DISABLED: 1
+      
+      # Development Settings
+      WATCHPACK_POLLING: "true"
+      
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - alphapulse_network
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  alphapulse_network:
+    driver: bridge

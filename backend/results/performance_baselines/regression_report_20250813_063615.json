@@ -1,0 +1,40 @@
+{
+  "report_id": "regression_report_20250813063615262903",
+  "timestamp": "2025-08-13T06:36:15.262912",
+  "total_tests": 2,
+  "passed_tests": 0,
+  "degraded_tests": 0,
+  "improved_tests": 0,
+  "unknown_tests": 2,
+  "overall_score": 0.5,
+  "recommendations": [
+    "\u2753 2 tests have unclear results - investigate further",
+    "\ud83d\udcc8 Performance is stable - continue monitoring"
+  ],
+  "test_details": [
+    {
+      "test_id": "failed_20250813063615261990",
+      "test_name": "single_symbol_detection",
+      "baseline_id": "baseline_single_symbol_v1",
+      "status": "unknown",
+      "degradation_score": 0.0,
+      "improvement_score": 0.0,
+      "timestamp": "2025-08-13T06:36:15.262028",
+      "metadata": {
+        "error": "Baseline baseline_single_symbol_v1 not found"
+      }
+    },
+    {
+      "test_id": "failed_20250813063615262856",
+      "test_name": "multi_symbol_detection",
+      "baseline_id": "baseline_multi_symbol_v1",
+      "status": "unknown",
+      "degradation_score": 0.0,
+      "improvement_score": 0.0,
+      "timestamp": "2025-08-13T06:36:15.262884",
+      "metadata": {
+        "error": "Baseline baseline_multi_symbol_v1 not found"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+# Let's Encrypt SSL Configuration for Production
+# Automated SSL certificate management
+
+version: '3.8'
+
+services:
+  # Certbot for SSL certificate management
+  certbot:
+    image: certbot/certbot:latest
+    container_name: alphapulse_certbot
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+      - ./nginx/ssl:/etc/nginx/ssl
+    command: certonly --webroot --webroot-path=/var/www/certbot --email admin@yourdomain.com --agree-tos --no-eff-email -d yourdomain.com -d api.yourdomain.com
+    networks:
+      - alphapulse_prod_network
+
+  # SSL certificate renewal service
+  certbot-renewal:
+    image: certbot/certbot:latest
+    container_name: alphapulse_certbot_renewal
+    volumes:
+      - ./ssl/certbot/conf:/etc/letsencrypt
+      - ./ssl/certbot/www:/var/www/certbot
+      - ./nginx/ssl:/etc/nginx/ssl
+    command: sh -c "trap exit TERM; while :; do certbot renew --webroot --webroot-path=/var/www/certbot; sleep 12h & wait $${!}; done;"
+    networks:
+      - alphapulse_prod_network
+    restart: unless-stopped
+
+volumes:
+  certbot_conf:
+  certbot_www:
+
+networks:
+  alphapulse_prod_network:
+    external: true

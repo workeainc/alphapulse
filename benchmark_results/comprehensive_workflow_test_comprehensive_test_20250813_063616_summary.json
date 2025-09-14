@@ -1,0 +1,42 @@
+{
+  "benchmark_id": "benchmark_20250813063616178408",
+  "test_name": "comprehensive_workflow_test",
+  "scenario": "comprehensive_test",
+  "timestamp": "2025-08-13T06:36:16.178456",
+  "execution_time_ms": 204.16879653930664,
+  "memory_usage_mb": 0.369140625,
+  "cpu_utilization": 1.8,
+  "throughput_ops_per_sec": 29.4881015102698,
+  "metadata": {
+    "iterations": 2,
+    "total_iterations": 2,
+    "execution_time_stats": {
+      "mean": 204.16879653930664,
+      "median": 204.16879653930664,
+      "min": 192.24047660827637,
+      "max": 216.0971164703369,
+      "stdev": 16.869191822788313
+    },
+    "memory_stats": {
+      "mean": 0.369140625,
+      "median": 0.369140625,
+      "min": 0.36328125,
+      "max": 0.375,
+      "stdev": 0.008286407592029853
+    },
+    "cpu_stats": {
+      "mean": 1.8,
+      "median": 1.8,
+      "min": 0.0,
+      "max": 3.6,
+      "stdev": 2.545584412271571
+    },
+    "throughput_stats": {
+      "mean": 29.4881015102698,
+      "median": 29.4881015102698,
+      "min": 27.765294132573974,
+      "max": 31.210908887965623,
+      "stdev": 2.436417558893862
+    }
+  }
+}

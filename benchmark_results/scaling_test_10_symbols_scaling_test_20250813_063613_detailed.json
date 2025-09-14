@@ -1,0 +1,35 @@
+{
+  "config": {
+    "test_name": "scaling_test_10_symbols",
+    "scenario": "scaling_test",
+    "iterations": 2,
+    "warmup_iterations": 1,
+    "parallel_workers": 8
+  },
+  "individual_metrics": [
+    {
+      "timestamp": "2025-08-13T06:36:13.334324",
+      "execution_time_ms": 201.07197761535645,
+      "memory_usage_mb": 0.265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 4.9733434358166235,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    },
+    {
+      "timestamp": "2025-08-13T06:36:13.647523",
+      "execution_time_ms": 201.2770175933838,
+      "memory_usage_mb": 0.265625,
+      "cpu_utilization": 0.0,
+      "throughput_ops_per_sec": 4.968277113585725,
+      "success_count": 1,
+      "error_count": 0,
+      "additional_metrics": {
+        "result_type": "dict"
+      }
+    }
+  ]
+}

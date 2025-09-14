@@ -1,0 +1,656 @@
+{
+  "enhanced_news_events": {
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "alphapulse",
+      "username": "alpha_emon",
+      "password": "Emon_@17711",
+      "pool_size": 20,
+      "max_overflow": 30
+    },
+    "news_api": {
+      "api_key": "your_news_api_key",
+      "base_url": "https://newsapi.org/v2",
+      "default_query": "cryptocurrency OR bitcoin OR ethereum OR blockchain",
+      "language": "en",
+      "page_size": 50,
+      "sort_by": "publishedAt"
+    },
+    "cryptopanic_api": {
+      "api_key": "032e815983cedc52fa015a2646fd29edc674d0bb",
+      "base_url": "https://cryptopanic.com/api/v1",
+      "default_currencies": "BTC,ETH,ADA,DOT,LINK,UNI,LTC,BCH,SOL,AVAX",
+      "default_kind": "news",
+      "default_filter": "rising",
+      "rate_limit_per_minute": 30,
+      "timeout_seconds": 20
+    },
+    "santiment_api": {
+      "api_key": "xnn6cgotimcqos67_uuraraismptmcwpi",
+      "base_url": "https://api.santiment.net/graphql",
+      "default_interval": "5m",
+      "rate_limit_per_minute": 60,
+      "timeout_seconds": 30,
+      "complexity_limit": 1000000
+    },
+    "rss_feeds": {
+      "enabled": true,
+      "poll_interval_minutes": 3,
+      "timeout_seconds": 15,
+      "max_articles_per_feed": 50,
+      "backfill_hours": 24,
+      "feeds": {
+        "high_priority": [
+          {
+            "name": "CoinDesk",
+            "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+            "category": "crypto_news",
+            "credibility": 0.9,
+            "enabled": true
+          },
+          {
+            "name": "CoinTelegraph",
+            "url": "https://cointelegraph.com/rss",
+            "category": "crypto_news",
+            "credibility": 0.8,
+            "enabled": true
+          },
+          {
+            "name": "Binance Blog",
+            "url": "https://www.binance.com/en/feed/blogs/rss",
+            "category": "exchange_news",
+            "credibility": 0.9,
+            "enabled": true
+          },
+          {
+            "name": "Ethereum Blog",
+            "url": "https://blog.ethereum.org/feed.xml",
+            "category": "protocol_news",
+            "credibility": 0.95,
+            "enabled": true
+          }
+        ],
+        "medium_priority": [
+          {
+            "name": "Decrypt",
+            "url": "https://decrypt.co/feed",
+            "category": "crypto_news",
+            "credibility": 0.7,
+            "enabled": true
+          },
+          {
+            "name": "CryptoSlate",
+            "url": "https://cryptoslate.com/feed/",
+            "category": "crypto_news",
+            "credibility": 0.7,
+            "enabled": true
+          },
+          {
+            "name": "Chainlink Blog",
+            "url": "https://blog.chain.link/feed/",
+            "category": "protocol_news",
+            "credibility": 0.8,
+            "enabled": true
+          },
+          {
+            "name": "Polygon Blog",
+            "url": "https://blog.polygon.technology/feed/",
+            "category": "protocol_news",
+            "credibility": 0.8,
+            "enabled": true
+          }
+        ],
+        "specialized": [
+          {
+            "name": "Bitcoin Magazine",
+            "url": "https://bitcoinmagazine.com/.rss/full/",
+            "category": "bitcoin_news",
+            "credibility": 0.8,
+            "enabled": true
+          },
+          {
+            "name": "Kraken Blog",
+            "url": "https://blog.kraken.com/feed",
+            "category": "exchange_news",
+            "credibility": 0.8,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "processing": {
+      "breaking_news_threshold": 0.8,
+      "sentiment_confidence_threshold": 0.6,
+      "relevance_threshold": 0.3,
+      "impact_threshold": 0.5,
+      "processing_interval_seconds": 300,
+      "batch_size": 100
+    },
+    "timescaledb": {
+      "chunk_intervals": {
+        "raw_news_content": "1 hour",
+        "economic_events_calendar": "1 day",
+        "crypto_events": "1 day",
+        "news_event_correlation": "2 hours",
+        "breaking_news_alerts": "30 minutes",
+        "news_impact_analysis": "1 hour",
+        "multi_language_news": "2 hours"
+      },
+      "compression_policies": {
+        "raw_news_content": "3 days",
+        "economic_events_calendar": "7 days",
+        "crypto_events": "7 days",
+        "news_event_correlation": "1 day",
+        "breaking_news_alerts": "1 day",
+        "news_impact_analysis": "2 days",
+        "multi_language_news": "3 days"
+      },
+      "retention_policies": {
+        "raw_news_content": "90 days",
+        "economic_events_calendar": "2 years",
+        "crypto_events": "2 years",
+        "news_event_correlation": "30 days",
+        "breaking_news_alerts": "14 days",
+        "news_impact_analysis": "60 days",
+        "multi_language_news": "60 days"
+      }
+    },
+    "keywords": {
+      "crypto": [
+        "bitcoin", "ethereum", "cryptocurrency", "blockchain", "defi", "nft",
+        "btc", "eth", "ada", "dot", "link", "uni", "ltc", "bch", "sol", "avax",
+        "cardano", "polkadot", "chainlink", "uniswap", "litecoin", "bitcoin cash",
+        "solana", "avalanche", "polygon", "binance coin", "ripple", "dogecoin"
+      ],
+      "economic": [
+        "fomc", "cpi", "nfp", "gdp", "fed", "ecb", "boe", "interest rate",
+        "inflation", "unemployment", "monetary policy", "fiscal policy",
+        "quantitative easing", "taper", "rate hike", "economic stimulus"
+      ],
+      "breaking_indicators": [
+        "breaking", "urgent", "just in", "exclusive", "flash", "alert",
+        "developing", "live", "update", "urgent update", "breaking news",
+        "just announced", "major announcement", "critical update"
+      ],
+      "sentiment_positive": [
+        "bullish", "surge", "rally", "moon", "pump", "breakout", "uptrend",
+        "adoption", "partnership", "integration", "launch", "upgrade",
+        "approval", "greenlight", "success", "growth", "profit"
+      ],
+      "sentiment_negative": [
+        "bearish", "crash", "dump", "selloff", "downtrend", "hack", "breach",
+        "ban", "restriction", "lawsuit", "investigation", "fine", "penalty",
+        "failure", "delay", "cancellation", "rejection"
+      ]
+    },
+    "sources": {
+      "credible_sources": [
+        "reuters", "bloomberg", "cnbc", "financial times", "wall street journal",
+        "yahoo finance", "marketwatch", "investing.com", "forbes", "business insider"
+      ],
+      "crypto_sources": [
+        "coindesk", "cointelegraph", "the block", "decrypt", "cryptonews",
+        "bitcoin.com", "cryptoslate", "ambcrypto", "newsbtc", "cryptodaily"
+      ],
+      "cryptopanic_sources": [
+        "cryptopanic", "reddit", "twitter", "telegram", "discord", "4chan"
+      ]
+    },
+    "alerts": {
+      "priority_levels": {
+        "critical": 0.9,
+        "high": 0.7,
+        "medium": 0.5,
+        "low": 0.3
+      },
+      "notification_channels": {
+        "websocket": true,
+        "email": false,
+        "slack": false,
+        "telegram": false
+      }
+    },
+    "performance": {
+      "max_workers": 4,
+      "processing_timeout_seconds": 30,
+      "query_timeout_seconds": 10,
+      "memory_limit_mb": 512
+    },
+    "social_metrics": {
+      "social_volume_threshold": 1000,
+      "dev_activity_threshold": 50,
+      "whale_transaction_threshold": 1000000,
+      "correlation_window_minutes": 30,
+      "spike_detection_threshold": 2.0
+    },
+    "correlation": {
+      "price_impact_window_minutes": 60,
+      "volume_spike_threshold": 1.5,
+      "correlation_minimum_samples": 10,
+      "market_reaction_threshold": 0.02
+    },
+    "entity_recognition": {
+      "enabled": true,
+      "spacy_model": "en_core_web_sm",
+      "crypto_entities": [
+        "BTC", "ETH", "ADA", "DOT", "LINK", "UNI", "LTC", "BCH", "SOL", "AVAX",
+        "Bitcoin", "Ethereum", "Cardano", "Polkadot", "Chainlink", "Uniswap",
+        "Litecoin", "Bitcoin Cash", "Solana", "Avalanche", "Binance", "Coinbase",
+        "Kraken", "FTX", "Tether", "USDC", "USDT", "DAI", "MakerDAO", "Compound",
+        "Aave", "Yearn Finance", "SushiSwap", "PancakeSwap", "Polygon", "Arbitrum",
+        "Optimism", "Base", "LayerZero", "Cosmos", "Terra", "Algorand", "Tezos"
+      ],
+      "event_types": [
+        "partnership", "hack", "listing", "ETF", "upgrade", "fork", "airdrop",
+        "governance", "defi", "nft", "metaverse", "regulation", "adoption",
+        "institutional", "whale", "mining", "staking", "yield", "liquidity",
+        "bridge", "cross_chain", "privacy", "scalability", "interoperability"
+      ],
+      "confidence_threshold": 0.7,
+      "max_entities_per_article": 10
+    },
+    "latency_tracking": {
+      "enabled": true,
+      "publish_time_extraction": true,
+      "ingest_time_tracking": true,
+      "latency_threshold_ms": 5000,
+      "performance_metrics": true
+    },
+    "cross_source_validation": {
+      "enabled": true,
+      "time_window_minutes": 30,
+      "similarity_threshold": 0.8,
+      "boost_factor": 1.5,
+      "minimum_sources": 2
+    },
+    "market_correlation": {
+      "enabled": true,
+      "price_data_source": "binance",
+      "symbols": ["BTCUSDT", "ETHUSDT", "ADAUSDT", "DOTUSDT", "LINKUSDT"],
+      "correlation_windows": [300, 900, 3600],
+      "impact_thresholds": {
+        "minor": 0.01,
+        "moderate": 0.03,
+        "major": 0.05,
+        "extreme": 0.10
+      },
+      "minimum_samples": 10,
+      "learning_window_hours": 168,
+      "prediction_accuracy_threshold": 0.7
+    },
+    "feed_reliability": {
+      "enabled": true,
+      "reliability_factors": {
+        "response_time_weight": 0.2,
+        "success_rate_weight": 0.3,
+        "prediction_accuracy_weight": 0.3,
+        "article_quality_weight": 0.2
+      },
+      "performance_windows": {
+        "short_term": 24,
+        "medium_term": 168,
+        "long_term": 720
+      },
+      "reliability_thresholds": {
+        "excellent": 0.9,
+        "good": 0.7,
+        "fair": 0.5,
+        "poor": 0.3
+      }
+    },
+    "automated_classification": {
+      "enabled": true,
+      "market_moving_threshold": 0.75,
+      "confidence_threshold": 0.8,
+      "classification_models": {
+        "impact_prediction": true,
+        "sentiment_enhancement": true,
+        "timing_optimization": true
+      },
+      "learning_parameters": {
+        "feedback_loop": true,
+        "accuracy_tracking": true,
+        "model_retraining": true
+      }
+    },
+    "price_data_integration": {
+      "enabled": true,
+      "binance_api": {
+        "base_url": "https://api.binance.com/api/v3",
+        "timeout_seconds": 10,
+        "rate_limit_per_minute": 1200,
+        "update_interval_seconds": 60
+      },
+      "symbols": ["BTCUSDT", "ETHUSDT", "ADAUSDT", "DOTUSDT", "LINKUSDT"],
+      "timeframes": ["1m", "5m", "15m", "1h", "4h", "1d"],
+      "correlation_windows": [1800, 7200, 86400],
+      "technical_indicators": {
+        "rsi": true,
+        "macd": true,
+        "bollinger_bands": true,
+        "volume_sma": true
+      }
+    },
+    "sentiment_normalization": {
+      "enabled": true,
+      "unified_scale": {
+        "min": -1.0,
+        "max": 1.0,
+        "neutral_threshold": 0.1
+      },
+      "source_weights": {
+        "cryptopanic": 0.4,
+        "santiment": 0.3,
+        "rss": 0.3
+      },
+      "confidence_thresholds": {
+        "high": 0.8,
+        "medium": 0.6,
+        "low": 0.4
+      }
+    },
+    "market_context": {
+      "enabled": true,
+      "regime_detection": {
+        "bull_threshold": 0.6,
+        "bear_threshold": -0.6,
+        "volatility_threshold": 0.3
+      },
+      "dominance_calculation": {
+        "btc_dominance": true,
+        "altcoin_dominance": true,
+        "defi_dominance": true
+      },
+      "volatility_metrics": {
+        "atr_period": 14,
+        "volatility_threshold": 0.02
+      }
+    },
+    "machine_learning": {
+      "enabled": true,
+      "prediction_models": {
+        "impact_prediction": {
+          "enabled": true,
+          "model_type": "lightgbm",
+          "confidence_threshold": 0.75,
+          "retrain_interval_hours": 168,
+          "feature_importance_tracking": true,
+          "hyperparameters": {
+            "learning_rate": 0.1,
+            "max_depth": 6,
+            "num_leaves": 31,
+            "feature_fraction": 0.8,
+            "bagging_fraction": 0.8,
+            "bagging_freq": 5,
+            "min_child_samples": 20,
+            "reg_alpha": 0.1,
+            "reg_lambda": 0.1
+          },
+          "training_config": {
+            "validation_split": 0.2,
+            "early_stopping_rounds": 50,
+            "num_boost_round": 1000,
+            "cross_validation_folds": 5
+          }
+        },
+        "sentiment_enhancement": {
+          "enabled": true,
+          "model_type": "xgboost",
+          "confidence_threshold": 0.8,
+          "retrain_interval_hours": 168,
+          "hyperparameters": {
+            "learning_rate": 0.1,
+            "max_depth": 4,
+            "subsample": 0.8,
+            "colsample_bytree": 0.8,
+            "min_child_weight": 1,
+            "reg_alpha": 0.1,
+            "reg_lambda": 1.0
+          },
+          "training_config": {
+            "validation_split": 0.2,
+            "early_stopping_rounds": 50,
+            "num_boost_round": 500,
+            "cross_validation_folds": 5
+          }
+        },
+        "timing_optimization": {
+          "enabled": true,
+          "model_type": "random_forest",
+          "confidence_threshold": 0.7,
+          "retrain_interval_hours": 168,
+          "hyperparameters": {
+            "n_estimators": 100,
+            "max_depth": 10,
+            "min_samples_split": 5,
+            "min_samples_leaf": 2,
+            "max_features": "sqrt",
+            "bootstrap": true,
+            "oob_score": true
+          },
+          "training_config": {
+            "validation_split": 0.2,
+            "cross_validation_folds": 5
+          }
+        }
+      },
+      "feature_engineering": {
+        "enabled": true,
+        "text_features": {
+          "tfidf": true,
+          "word_embeddings": true,
+          "sentiment_lexicons": true,
+          "entity_density": true,
+          "topic_modeling": true,
+          "keyword_extraction": true,
+          "readability_scores": true,
+          "language_detection": true
+        },
+        "market_features": {
+          "price_momentum": true,
+          "volume_analysis": true,
+          "volatility_metrics": true,
+          "correlation_history": true,
+          "market_regime_features": true,
+          "dominance_metrics": true,
+          "liquidity_indicators": true,
+          "order_book_imbalance": true
+        },
+        "temporal_features": {
+          "time_of_day": true,
+          "day_of_week": true,
+          "market_hours": true,
+          "event_calendar": true,
+          "seasonality_patterns": true,
+          "news_frequency": true,
+          "market_cycles": true,
+          "time_decay_factors": true
+        },
+        "social_features": {
+          "social_volume": true,
+          "dev_activity": true,
+          "whale_movements": true,
+          "community_sentiment": true,
+          "influencer_mentions": true,
+          "trending_topics": true,
+          "engagement_metrics": true,
+          "viral_coefficient": true
+        }
+      },
+      "model_performance": {
+        "tracking_enabled": true,
+        "accuracy_threshold": 0.7,
+        "precision_threshold": 0.6,
+        "recall_threshold": 0.5,
+        "f1_threshold": 0.6,
+        "metrics_tracking": {
+          "accuracy": true,
+          "precision": true,
+          "recall": true,
+          "f1_score": true,
+          "auc_roc": true,
+          "log_loss": true,
+          "mean_squared_error": true,
+          "mean_absolute_error": true
+        },
+        "model_validation": {
+          "cross_validation": true,
+          "holdout_validation": true,
+          "time_series_validation": true,
+          "backtesting": true
+        },
+        "performance_alerts": {
+          "accuracy_drop_threshold": 0.1,
+          "precision_drop_threshold": 0.1,
+          "recall_drop_threshold": 0.1,
+          "f1_drop_threshold": 0.1
+        }
+      },
+      "model_training": {
+        "enabled": true,
+        "data_preprocessing": {
+          "feature_scaling": "standard",
+          "missing_value_strategy": "impute",
+          "outlier_detection": true,
+          "feature_selection": true
+        },
+        "hyperparameter_tuning": {
+          "enabled": true,
+          "method": "grid_search",
+          "cv_folds": 5,
+          "n_iter": 100
+        },
+        "ensemble_methods": {
+          "voting": true,
+          "stacking": true,
+          "bagging": true,
+          "boosting": true
+        }
+      }
+    },
+    "advanced_correlation": {
+      "enabled": true,
+      "statistical_methods": {
+        "pearson": true,
+        "spearman": true,
+        "kendall": true,
+        "granger_causality": true
+      },
+      "correlation_windows": {
+        "ultra_short": [300, 600, 900],
+        "short": [1800, 3600],
+        "medium": [7200, 14400],
+        "long": [86400, 172800]
+      },
+      "dynamic_analysis": {
+        "enabled": true,
+        "volatility_adjustment": true,
+        "regime_adjustment": true,
+        "pattern_detection": true,
+        "trend_analysis": true
+      },
+      "significance_testing": {
+        "enabled": true,
+        "alpha_level": 0.05,
+        "confidence_intervals": true,
+        "sample_size_threshold": 30,
+        "bootstrap_samples": 1000
+      },
+      "impact_measurement": {
+        "price_impact": true,
+        "volume_impact": true,
+        "volatility_impact": true,
+        "market_regime_impact": true
+      }
+    },
+    "real_time_alerts": {
+      "enabled": true,
+      "alert_types": {
+        "high_correlation": {
+          "enabled": true,
+          "threshold": 0.8,
+          "priority": "high"
+        },
+        "regime_change": {
+          "enabled": true,
+          "confidence_threshold": 0.7,
+          "priority": "medium"
+        },
+        "impact_prediction": {
+          "enabled": true,
+          "threshold": 0.75,
+          "priority": "critical"
+        },
+        "anomaly_detection": {
+          "enabled": true,
+          "threshold": 2.0,
+          "priority": "high"
+        },
+        "volatility_spike": {
+          "enabled": true,
+          "threshold": 0.7,
+          "priority": "high"
+        },
+        "sentiment_extremes": {
+          "enabled": true,
+          "threshold": 0.9,
+          "priority": "medium"
+        }
+      },
+      "notification_channels": {
+        "websocket": true,
+        "database": true,
+        "log_file": true
+      }
+    },
+    "advanced_analytics": {
+      "enabled": true,
+      "sentiment_enhancement": {
+        "multi_model_ensemble": true,
+        "confidence_weighting": true,
+        "market_context_adjustment": true,
+        "volatility_amplification": true,
+        "regime_based_adjustment": true,
+        "social_volume_boost": true,
+        "cross_validation_boost": true
+      },
+      "impact_prediction": {
+        "ensemble_methods": true,
+        "volatility_forecasting": true,
+        "time_based_impacts": true,
+        "pattern_matching": true,
+        "entity_weighting": true,
+        "social_spike_detection": true,
+        "breaking_news_boost": true
+      },
+      "correlation_analysis": {
+        "dynamic_windows": true,
+        "statistical_significance": true,
+        "pattern_recognition": true,
+        "trend_analysis": true,
+        "regime_adjustment": true,
+        "reliability_scoring": true
+      },
+      "anomaly_detection": {
+        "enabled": true,
+        "methods": ["isolation_forest", "statistical_outliers", "pattern_breaks"],
+        "sensitivity": 0.7,
+        "confidence_threshold": 0.8
+      },
+      "clustering": {
+        "enabled": true,
+        "methods": ["kmeans", "dbscan", "hierarchical"],
+        "similarity_threshold": 0.8,
+        "min_cluster_size": 3
+      },
+      "theme_extraction": {
+        "enabled": true,
+        "nlp_embeddings": true,
+        "topic_modeling": true,
+        "entity_clustering": true,
+        "temporal_themes": true
+      }
+    }
+  }
+}

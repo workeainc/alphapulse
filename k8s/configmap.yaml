@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alphapulse-config
+  namespace: alphapulse
+data:
+  # Database Configuration
+  DATABASE_URL: "postgresql://alphapulse_user:alphapulse_password@alphapulse-postgres:5432/alphapulse"
+  REDIS_URL: "redis://alphapulse-redis:6379"
+  
+  # API Configuration
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  DEBUG: "false"
+  
+  # Dashboard Configuration
+  DASHBOARD_HOST: "0.0.0.0"
+  DASHBOARD_PORT: "8050"
+  
+  # Monitoring Configuration
+  PROMETHEUS_ENABLED: "true"
+  METRICS_PORT: "9090"
+  
+  # Trading Configuration
+  MAX_SYMBOLS: "3000"
+  MAX_PORTFOLIO_RISK: "0.1"
+  CACHE_TTL: "300"
+  
+  # Risk Management
+  STRESS_TEST_ENABLED: "true"
+  COMPLIANCE_REPORTING: "true"
+  
+  # Performance Tuning
+  WORKER_THREADS: "4"
+  MAX_CONNECTIONS: "100"
+  REQUEST_TIMEOUT: "30"

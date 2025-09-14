@@ -1,0 +1,42 @@
+{
+  "benchmark_id": "benchmark_20250813062827931269",
+  "test_name": "complex_pattern_analysis",
+  "scenario": "integration_test",
+  "timestamp": "2025-08-13T06:28:27.931318",
+  "execution_time_ms": 192.62754917144775,
+  "memory_usage_mb": 0.810546875,
+  "cpu_utilization": 0.0,
+  "throughput_ops_per_sec": 31.15413191690711,
+  "metadata": {
+    "iterations": 2,
+    "total_iterations": 2,
+    "execution_time_stats": {
+      "mean": 192.62754917144775,
+      "median": 192.62754917144775,
+      "min": 189.96787071228027,
+      "max": 195.28722763061523,
+      "stdev": 3.761353348506227
+    },
+    "memory_stats": {
+      "mean": 0.810546875,
+      "median": 0.810546875,
+      "min": 0.8046875,
+      "max": 0.81640625,
+      "stdev": 0.008286407592029853
+    },
+    "cpu_stats": {
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "stdev": 0.0
+    },
+    "throughput_stats": {
+      "mean": 31.15413191690711,
+      "median": 31.15413191690711,
+      "min": 30.723975514409823,
+      "max": 31.584288319404404,
+      "stdev": 0.6083330183532886
+    }
+  }
+}

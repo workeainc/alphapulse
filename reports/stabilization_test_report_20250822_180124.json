@@ -1,0 +1,25 @@
+{
+  "database_schema": {
+    "symbol_column_exists": true,
+    "prediction_value_column_exists": true,
+    "liquidity_score_exists": true,
+    "volatility_score_exists": true,
+    "error": "(psycopg2.errors.NotNullViolation) null value in column \"news_id\" of relation \"_hyper_168_15569_chunk\" violates not-null constraint\nDETAIL:  Failing row contains (2025-08-22 18:01:24.628916+06, 13813, null, test_ensemble, liquidation, 0.750000, 0.8000, {}, v1.0, {}, 2025-08-22 18:01:24.613863+06, TEST/USDT, 0.750000, {\"test\": 1.0}, {\"lstm\": 0.35, \"lightgbm\": 0.4, \"transformer\": 0.25}, trending, 60, medium).\n\n[SQL: \n                    INSERT INTO ml_predictions (\n                        symbol, timestamp, model_type, prediction_type, predicted_value,\n                        confidence_score, prediction_value, feature_vector, ensemble_weights,\n                        market_regime, prediction_horizon, risk_level\n                    ) VALUES (\n                        %(symbol)s, %(timestamp)s, %(model_type)s, %(prediction_type)s, %(predicted_value)s,\n                        %(confidence_score)s, %(prediction_value)s, %(feature_vector)s, %(ensemble_weights)s,\n                        %(market_regime)s, %(prediction_horizon)s, %(risk_level)s\n                    )\n                ]\n[parameters: {'symbol': 'TEST/USDT', 'timestamp': datetime.datetime(2025, 8, 22, 18, 1, 24, 628916), 'model_type': 'test_ensemble', 'prediction_type': 'liquidation', 'predicted_value': 0.75, 'confidence_score': 0.8, 'prediction_value': 0.75, 'feature_vector': '{\"test\": 1.0}', 'ensemble_weights': '{\"lightgbm\": 0.4, \"lstm\": 0.35, \"transformer\": 0.25}', 'market_regime': 'trending', 'prediction_horizon': 60, 'risk_level': 'medium'}]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)"
+  },
+  "async_await_fixes": {
+    "risk_level_calculation": false,
+    "volume_estimation": true,
+    "ensemble_weight_update": true
+  },
+  "ensemble_system": {
+    "signal_conversion": true,
+    "weighted_voting": true,
+    "risk_determination": true,
+    "market_regime_determination": true
+  },
+  "ml_services": {
+    "initialization": true,
+    "error": "PredictiveAnalyticsService._engineer_liquidation_features() missing 1 required positional argument: 'market_data'"
+  },
+  "overall_status": "FAILED"
+}

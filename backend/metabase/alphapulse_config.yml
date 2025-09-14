@@ -1,0 +1,338 @@
+# AlphaPulse Metabase Configuration
+# Phase 3 - Priority 8: Grafana/Metabase Dashboards & Alerts
+
+# Database Configuration
+database:
+  name: "AlphaPulse TimescaleDB"
+  engine: "postgres"
+  host: "localhost"
+  port: 5432
+  dbname: "alphapulse"
+  user: "alpha_emon"
+  password: "Emon_@17711"
+  ssl: false
+  
+  # Connection pool settings
+  connection_pool:
+    min_connections: 5
+    max_connections: 20
+    connection_timeout: 30000
+    idle_timeout: 600000
+
+# Dashboard Configuration
+dashboards:
+  - name: "AlphaPulse Trading Overview"
+    description: "Comprehensive trading performance and system health overview"
+    
+    cards:
+      - name: "Trading Performance Metrics"
+        type: "scalar"
+        query: |
+          SELECT 
+            AVG(win_rate) as avg_win_rate,
+            AVG(precision) as avg_precision,
+            AVG(profit_factor) as avg_profit_factor,
+            AVG(avg_rr) as avg_risk_reward
+          FROM (
+            SELECT 
+              CASE WHEN outcome = 'win' THEN 1 ELSE 0 END as win_rate,
+              CASE WHEN pred = label THEN 1 ELSE 0 END as precision,
+              -- Calculate profit factor (simplified)
+              CASE 
+                WHEN realized_rr > 0 THEN realized_rr
+                ELSE 0 
+              END as profit_factor,
+              ABS(realized_rr) as avg_rr
+            FROM signals 
+            WHERE ts >= NOW() - INTERVAL '24 hours'
+          ) metrics
+      
+      - name: "Model Performance by Type"
+        type: "bar"
+        query: |
+          SELECT 
+            model_id,
+            COUNT(*) as total_signals,
+            AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as accuracy,
+            AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '7 days'
+          GROUP BY model_id
+          ORDER BY accuracy DESC
+      
+      - name: "Drift Detection Metrics"
+        type: "line"
+        query: |
+          SELECT 
+            DATE_TRUNC('hour', ts) as time_bucket,
+            AVG(psi_drift_score) as avg_psi_drift,
+            AVG(auc_delta) as avg_auc_delta,
+            AVG(concept_drift_score) as avg_concept_drift
+          FROM (
+            SELECT 
+              ts,
+              -- Calculate PSI drift (simplified)
+              ABS(predicted_probability - 0.5) as psi_drift_score,
+              -- Calculate AUC delta (simplified)
+              CASE 
+                WHEN predicted_probability > 0.7 AND outcome = 'win' THEN 0.1
+                WHEN predicted_probability < 0.3 AND outcome = 'loss' THEN 0.1
+                ELSE 0.0
+              END as auc_delta,
+              -- Calculate concept drift (simplified)
+              CASE 
+                WHEN ABS(predicted_probability - 0.5) > 0.2 THEN 0.2
+                ELSE 0.0
+              END as concept_drift_score
+            FROM signals 
+            WHERE ts >= NOW() - INTERVAL '24 hours'
+          ) drift_metrics
+          GROUP BY time_bucket
+          ORDER BY time_bucket
+      
+      - name: "Active Learning Queue Status"
+        type: "table"
+        query: |
+          SELECT 
+            status,
+            COUNT(*) as count,
+            AVG(prediction_confidence) as avg_confidence,
+            MIN(created_at) as oldest_item,
+            MAX(created_at) as newest_item
+          FROM active_learning_queue
+          GROUP BY status
+          ORDER BY count DESC
+      
+      - name: "System Health Overview"
+        type: "scalar"
+        query: |
+          SELECT 
+            -- Database health (simplified)
+            CASE 
+              WHEN COUNT(*) > 0 THEN 1.0
+              ELSE 0.0
+            END as db_health,
+            -- Active learning health
+            CASE 
+              WHEN COUNT(*) > 0 AND COUNT(*) < 100 THEN 1.0
+              WHEN COUNT(*) >= 100 THEN 0.5
+              ELSE 0.0
+            END as active_learning_health
+          FROM active_learning_queue
+          WHERE created_at >= NOW() - INTERVAL '1 hour'
+
+  - name: "AlphaPulse Model Analytics"
+    description: "Detailed model performance and drift analysis"
+    
+    cards:
+      - name: "Model Accuracy Trends"
+        type: "line"
+        query: |
+          SELECT 
+            DATE_TRUNC('hour', ts) as time_bucket,
+            model_id,
+            AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as accuracy,
+            COUNT(*) as signal_count
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '7 days'
+          GROUP BY time_bucket, model_id
+          HAVING COUNT(*) >= 5
+          ORDER BY time_bucket, accuracy DESC
+      
+      - name: "Feature Importance Analysis"
+        type: "bar"
+        query: |
+          SELECT 
+            feature_name,
+            AVG(feature_value) as avg_importance,
+            COUNT(*) as usage_count
+          FROM (
+            SELECT 
+              jsonb_object_keys(features) as feature_name,
+              (features->jsonb_object_keys(features))::float as feature_value
+            FROM signals 
+            WHERE ts >= NOW() - INTERVAL '24 hours'
+              AND features IS NOT NULL
+          ) feature_data
+          GROUP BY feature_name
+          ORDER BY avg_importance DESC
+          LIMIT 20
+      
+      - name: "Prediction Confidence Distribution"
+        type: "histogram"
+        query: |
+          SELECT 
+            CASE 
+              WHEN predicted_probability < 0.3 THEN 'Low (0-0.3)'
+              WHEN predicted_probability < 0.7 THEN 'Medium (0.3-0.7)'
+              ELSE 'High (0.7-1.0)'
+            END as confidence_bucket,
+            COUNT(*) as count,
+            AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as accuracy
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '24 hours'
+          GROUP BY confidence_bucket
+          ORDER BY confidence_bucket
+
+  - name: "AlphaPulse Trading Signals"
+    description: "Real-time trading signal analysis and performance"
+    
+    cards:
+      - name: "Signal Generation by Symbol"
+        type: "bar"
+        query: |
+          SELECT 
+            symbol,
+            COUNT(*) as total_signals,
+            COUNT(CASE WHEN outcome = 'win' THEN 1 END) as winning_signals,
+            AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate,
+            AVG(realized_rr) as avg_return
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '24 hours'
+          GROUP BY symbol
+          ORDER BY total_signals DESC
+      
+      - name: "Signal Performance by Timeframe"
+        type: "table"
+        query: |
+          SELECT 
+            tf as timeframe,
+            COUNT(*) as total_signals,
+            AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate,
+            AVG(realized_rr) as avg_return,
+            AVG(latency_ms) as avg_latency
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '7 days'
+          GROUP BY tf
+          ORDER BY total_signals DESC
+      
+      - name: "Signal Quality Over Time"
+        type: "line"
+        query: |
+          SELECT 
+            DATE_TRUNC('hour', ts) as time_bucket,
+            COUNT(*) as signal_count,
+            AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as precision,
+            AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate,
+            AVG(realized_rr) as avg_return
+          FROM signals 
+          WHERE ts >= NOW() - INTERVAL '24 hours'
+          GROUP BY time_bucket
+          ORDER BY time_bucket
+
+# Alert Configuration
+alerts:
+  - name: "Low Precision Alert"
+    description: "Alert when trading precision drops below 60%"
+    query: |
+      SELECT 
+        AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as precision
+      FROM signals 
+      WHERE ts >= NOW() - INTERVAL '1 hour'
+    condition: "precision < 0.6"
+    notification:
+      type: "email"
+      recipients: ["trading-team@alphapulse.com"]
+  
+  - name: "High Drift Alert"
+    description: "Alert when PSI drift score exceeds 0.25"
+    query: |
+      SELECT 
+        AVG(ABS(predicted_probability - 0.5)) as psi_drift
+      FROM signals 
+      WHERE ts >= NOW() - INTERVAL '1 hour'
+    condition: "psi_drift > 0.25"
+    notification:
+      type: "slack"
+      channel: "#ml-alerts"
+  
+  - name: "Active Learning Queue Alert"
+    description: "Alert when active learning queue has too many pending items"
+    query: |
+      SELECT COUNT(*) as pending_count
+      FROM active_learning_queue
+      WHERE status = 'pending'
+    condition: "pending_count > 100"
+    notification:
+      type: "discord"
+      webhook_url: "https://discord.com/api/webhooks/your-webhook-url"
+
+# Scheduled Reports
+scheduled_reports:
+  - name: "Daily Trading Performance Report"
+    description: "Daily summary of trading performance"
+    schedule: "0 9 * * *"  # Daily at 9 AM
+    query: |
+      SELECT 
+        DATE(ts) as date,
+        COUNT(*) as total_signals,
+        AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate,
+        AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as precision,
+        AVG(realized_rr) as avg_return,
+        SUM(realized_rr) as total_return
+      FROM signals 
+      WHERE ts >= CURRENT_DATE - INTERVAL '1 day'
+      GROUP BY DATE(ts)
+    recipients: ["trading-team@alphapulse.com", "management@alphapulse.com"]
+  
+  - name: "Weekly Model Performance Report"
+    description: "Weekly model performance and drift analysis"
+    schedule: "0 10 * * 1"  # Every Monday at 10 AM
+    query: |
+      SELECT 
+        model_id,
+        COUNT(*) as total_signals,
+        AVG(CASE WHEN pred = label THEN 1.0 ELSE 0.0 END) as accuracy,
+        AVG(CASE WHEN outcome = 'win' THEN 1.0 ELSE 0.0 END) as win_rate,
+        AVG(realized_rr) as avg_return
+      FROM signals 
+      WHERE ts >= NOW() - INTERVAL '7 days'
+      GROUP BY model_id
+      ORDER BY accuracy DESC
+    recipients: ["ml-team@alphapulse.com", "trading-team@alphapulse.com"]
+
+# Data Refresh Settings
+data_refresh:
+  # Refresh intervals for different data sources
+  signals: "5m"  # Refresh signals data every 5 minutes
+  active_learning: "1m"  # Refresh active learning data every minute
+  system_health: "30s"  # Refresh system health every 30 seconds
+  
+  # Cache settings
+  cache_duration: "5m"
+  cache_strategy: "background"
+
+# Security Settings
+security:
+  # Row-level security
+  row_level_security:
+    enabled: true
+    policies:
+      - name: "team_access"
+        description: "Users can only see data for their team"
+        query: "team = current_user_team()"
+  
+  # Data masking
+  data_masking:
+    enabled: true
+    masked_columns:
+      - table: "signals"
+        column: "features"
+        mask_type: "hash"
+      - table: "active_learning_queue"
+        column: "features"
+        mask_type: "hash"
+
+# Performance Settings
+performance:
+  # Query optimization
+  query_timeout: "300s"
+  max_query_rows: 100000
+  
+  # Connection pooling
+  connection_pool_size: 20
+  connection_timeout: "30s"
+  
+  # Caching
+  enable_query_caching: true
+  cache_ttl: "5m"

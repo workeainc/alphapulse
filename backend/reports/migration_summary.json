@@ -1,0 +1,103 @@
+{
+  "migration_timestamp": "2025-08-15T17:45:26.826228",
+  "backup_location": "backup_before_reorganization",
+  "files_moved": 27,
+  "migration_log": [
+    "Moved: alphapulse_core.py -> core/alphapulse_core.py",
+    "Moved: indicators_engine.py -> core/indicators_engine.py",
+    "Moved: ml_signal_generator.py -> core/ml_signal_generator.py",
+    "Moved: market_regime_detector.py -> core/market_regime_detector.py",
+    "Moved: optimized_trading_system.py -> core/optimized_trading_system.py",
+    "Moved: websocket_binance.py -> core/websocket_binance.py",
+    "Moved: test_simple_working.py -> tests/test_simple_working.py",
+    "Moved: test_edge_cases_simple.py -> tests/test_edge_cases.py",
+    "Moved: test_database_simple.py -> tests/test_database.py",
+    "Moved: test_performance_simple.py -> tests/test_performance.py",
+    "Moved: test_integration_simple.py -> tests/test_integration_simple.py",
+    "Backed up duplicate: debug_manual_labeling.py",
+    "Backed up duplicate: test_add_low_confidence_function.py",
+    "Backed up duplicate: run_chaos_engineering.py",
+    "Backed up duplicate: run_multi_region_dashboard.py",
+    "Backed up duplicate: run_resilience_dashboard.py",
+    "Backed up duplicate: run_security_dashboard.py",
+    "Backed up duplicate: database/migrations/env_enhanced.py",
+    "Backed up duplicate: database/db_scanner_simple.py",
+    "Backed up duplicate: tests/conftest_enhanced.py",
+    "Backed up duplicate: tests/test_unit_indicators.py",
+    "Backed up duplicate: tests/test_pipeline_enhanced.py",
+    "Consolidated: app/core/advanced_analytics.py",
+    "Consolidated: app/core/advanced_diagnostics.py",
+    "Consolidated: ai/advanced_backtesting.py",
+    "Consolidated: ai/advanced_portfolio_management.py",
+    "Consolidated: app/core/performance_alerting.py"
+  ],
+  "new_structure": {
+    "core": [
+      "alphapulse_core.py",
+      "indicators_engine.py",
+      "ml_signal_generator.py",
+      "market_regime_detector.py",
+      "optimized_trading_system.py",
+      "websocket_binance.py"
+    ],
+    "utils": [
+      "feature_engineering.py",
+      "risk_management.py",
+      "threshold_env.py",
+      "utils.py",
+      "config.py"
+    ],
+    "services": [
+      "data_services.py",
+      "monitoring_services.py",
+      "trading_services.py",
+      "pattern_services.py",
+      "active_learning_service.py"
+    ],
+    "database": [
+      "models.py",
+      "queries.py",
+      "connection.py",
+      "migrations/"
+    ],
+    "tests": [
+      "test_integration.py",
+      "test_indicators.py",
+      "test_performance.py",
+      "test_database.py",
+      "test_edge_cases.py",
+      "test_utils.py",
+      "conftest.py"
+    ],
+    "docs": [
+      "README.md",
+      "model_docs.md",
+      "performance_baseline.md",
+      "api_docs.md"
+    ],
+    "ai": [
+      "advanced_utils.py",
+      "ml_models.py",
+      "feature_store.py",
+      "deployment.py"
+    ],
+    "strategies": [
+      "pattern_detectors.py",
+      "signal_generators.py",
+      "trend_analyzers.py",
+      "strategy_manager.py"
+    ],
+    "execution": [
+      "trading_engine.py",
+      "order_manager.py",
+      "portfolio_manager.py",
+      "risk_manager.py"
+    ],
+    "scripts": [
+      "run_alphapulse.py",
+      "run_tests.py",
+      "setup_database.py",
+      "migrate_data.py"
+    ]
+  }
+}

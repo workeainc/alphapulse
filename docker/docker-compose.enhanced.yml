@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  # Redis Cache Service
+  redis:
+    image: redis:7-alpine
+    container_name: alphapulse_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL with TimescaleDB
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: alphapulse_postgres
+    environment:
+      POSTGRES_DB: alphapulse
+      POSTGRES_USER: alpha_emon
+      POSTGRES_PASSWORD: Emon_@17711
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_enhanced_data_tables.sql:/docker-entrypoint-initdb.d/init_enhanced_data_tables.sql
+      - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alpha_emon -d alphapulse"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Enhanced AlphaPlus Backend
+  backend_enhanced:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile.enhanced
+    container_name: alphapulse_backend_enhanced
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://alpha_emon:Emon_@17711@postgres:5432/alphapulse
+      - LOG_LEVEL=INFO
+      - ENABLE_CACHE=true
+      - ENABLE_WEBSOCKET=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app
+      - backend_logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: alphapulse_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.enhanced.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend_enhanced
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: alphapulse_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: alphapulse_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/alphapulse_dashboard.json:/etc/grafana/provisioning/dashboards/alphapulse_dashboard.json
+      - ./grafana/alphapulse_alerts.yml:/etc/grafana/provisioning/alerting/alphapulse_alerts.yml
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+
+  # Redis Commander (Optional - for Redis management)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: alphapulse_redis_commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - alphapulse_network
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+  backend_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  alphapulse_network:
+    driver: bridge

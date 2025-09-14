@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: alphapulse-postgres
+  namespace: alphapulse
+spec:
+  serviceName: alphapulse-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alphapulse-postgres
+  template:
+    metadata:
+      labels:
+        app: alphapulse-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: timescale/timescaledb:latest-pg15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: alphapulse
+        - name: POSTGRES_USER
+          value: alphapulse_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alphapulse-secrets
+              key: postgres-password
+        - name: POSTGRES_INITDB_ARGS
+          value: "--data-checksums"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - alphapulse_user
+            - -d
+            - alphapulse
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - alphapulse_user
+            - -d
+            - alphapulse
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alphapulse-postgres
+  namespace: alphapulse
+spec:
+  selector:
+    app: alphapulse-postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: alphapulse
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: standard

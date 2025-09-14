@@ -1,0 +1,138 @@
+{
+  "phase": "5.2",
+  "name": "Real-time Chart Integration",
+  "status": "FAILED",
+  "tests": [
+    {
+      "test": "Server Health",
+      "status": "PASSED",
+      "details": "Server is running",
+      "timestamp": "2025-08-28T20:33:35.244448",
+      "data": {
+        "status": "healthy",
+        "service": "AlphaPlus",
+        "database": "connected",
+        "timestamp": "2025-08-28T14:33:35.244463"
+      }
+    },
+    {
+      "test": "Chart Endpoint /api/charts/candlestick/BTCUSDT",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.250902",
+      "data": {}
+    },
+    {
+      "test": "Chart Endpoint /api/charts/technical-indicators/BTCUSDT",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.252278",
+      "data": {}
+    },
+    {
+      "test": "Chart Endpoint /api/charts/real-time/BTCUSDT",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.253671",
+      "data": {}
+    },
+    {
+      "test": "Candlestick Data Structure",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.259941",
+      "data": {}
+    },
+    {
+      "test": "Technical Indicators Structure",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.266331",
+      "data": {}
+    },
+    {
+      "test": "Real-time Data Endpoint",
+      "status": "FAILED",
+      "details": "Endpoint returned status 404",
+      "timestamp": "2025-08-28T20:33:35.272183",
+      "data": {}
+    },
+    {
+      "test": "Multi-symbol Candlestick BTCUSDT",
+      "status": "FAILED",
+      "details": "Symbol BTCUSDT returned status 404",
+      "timestamp": "2025-08-28T20:33:35.278251",
+      "data": {}
+    },
+    {
+      "test": "Multi-symbol Candlestick ETHUSDT",
+      "status": "FAILED",
+      "details": "Symbol ETHUSDT returned status 404",
+      "timestamp": "2025-08-28T20:33:35.279442",
+      "data": {}
+    },
+    {
+      "test": "Multi-symbol Candlestick SOLUSDT",
+      "status": "FAILED",
+      "details": "Symbol SOLUSDT returned status 404",
+      "timestamp": "2025-08-28T20:33:35.280313",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 1m",
+      "status": "FAILED",
+      "details": "Timeframe 1m returned status 404",
+      "timestamp": "2025-08-28T20:33:35.286330",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 5m",
+      "status": "FAILED",
+      "details": "Timeframe 5m returned status 404",
+      "timestamp": "2025-08-28T20:33:35.287371",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 15m",
+      "status": "FAILED",
+      "details": "Timeframe 15m returned status 404",
+      "timestamp": "2025-08-28T20:33:35.288219",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 1h",
+      "status": "FAILED",
+      "details": "Timeframe 1h returned status 404",
+      "timestamp": "2025-08-28T20:33:35.289001",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 4h",
+      "status": "FAILED",
+      "details": "Timeframe 4h returned status 404",
+      "timestamp": "2025-08-28T20:33:35.289789",
+      "data": {}
+    },
+    {
+      "test": "Timeframe Parameter 1d",
+      "status": "FAILED",
+      "details": "Timeframe 1d returned status 404",
+      "timestamp": "2025-08-28T20:33:35.290581",
+      "data": {}
+    },
+    {
+      "test": "Frontend Integration",
+      "status": "FAILED",
+      "details": "Frontend connection error: Cannot connect to host localhost:3000 ssl:default [The remote computer refused the network connection]",
+      "timestamp": "2025-08-28T20:33:37.584331",
+      "data": {}
+    }
+  ],
+  "summary": {
+    "total_tests": 17,
+    "passed_tests": 1,
+    "failed_tests": 16,
+    "success_rate": 5.88235294117647,
+    "timestamp": "2025-08-28T20:33:37.584634"
+  }
+}

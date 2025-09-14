@@ -1,0 +1,110 @@
+# Enhanced Sentiment Analysis Environment Configuration
+# Copy this file to .env.sentiment and fill in your actual API keys
+
+# =============================================================================
+# DATABASE CONFIGURATION
+# =============================================================================
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=alphapulse
+DB_USER=alpha_emon
+DB_PASSWORD=Emon_@17711
+
+# =============================================================================
+# REDIS CONFIGURATION
+# =============================================================================
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_PASSWORD=
+
+# =============================================================================
+# TWITTER API CONFIGURATION
+# =============================================================================
+# Get these from https://developer.twitter.com/en/portal/dashboard
+TWITTER_API_KEY=your_twitter_api_key_here
+TWITTER_API_SECRET=your_twitter_api_secret_here
+TWITTER_BEARER_TOKEN=your_twitter_bearer_token_here
+TWITTER_ACCESS_TOKEN=your_twitter_access_token_here
+TWITTER_ACCESS_TOKEN_SECRET=your_twitter_access_token_secret_here
+
+# =============================================================================
+# REDDIT API CONFIGURATION
+# =============================================================================
+# Get these from https://www.reddit.com/prefs/apps
+REDDIT_CLIENT_ID=your_reddit_client_id_here
+REDDIT_CLIENT_SECRET=your_reddit_client_secret_here
+REDDIT_USER_AGENT=AlphaPlus-Sentiment-Analysis/1.0
+
+# =============================================================================
+# NEWS API CONFIGURATION
+# =============================================================================
+# Get this from https://newsapi.org/register
+NEWS_API_KEY=your_news_api_key_here
+NEWS_API_URL=https://newsapi.org/v2
+
+# =============================================================================
+# TELEGRAM API CONFIGURATION
+# =============================================================================
+# Get these from https://my.telegram.org/apps
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
+TELEGRAM_API_ID=your_telegram_api_id_here
+TELEGRAM_API_HASH=your_telegram_api_hash_here
+
+# =============================================================================
+# DISCORD API CONFIGURATION
+# =============================================================================
+# Get these from https://discord.com/developers/applications
+DISCORD_BOT_TOKEN=your_discord_bot_token_here
+DISCORD_GUILD_ID=your_discord_guild_id_here
+
+# =============================================================================
+# ALTERNATIVE API KEYS
+# =============================================================================
+# CryptoPanic API (optional)
+CRYPTO_PANIC_API_KEY=your_crypto_panic_api_key_here
+
+# CryptoCompare API (optional)
+CRYPTOCOMPARE_API_KEY=your_cryptocompare_api_key_here
+
+# =============================================================================
+# SENTIMENT MODEL CONFIGURATION
+# =============================================================================
+# Model to use for sentiment analysis
+SENTIMENT_MODEL=distilbert-base-uncased-finetuned-sst-2-english
+
+# Device to use for model inference (auto, cpu, cuda)
+SENTIMENT_DEVICE=auto
+
+# Maximum text length for sentiment analysis
+SENTIMENT_MAX_LENGTH=512
+
+# =============================================================================
+# PROCESSING CONFIGURATION
+# =============================================================================
+# Collection interval in seconds
+SENTIMENT_COLLECTION_INTERVAL=60
+
+# Aggregation interval in seconds
+SENTIMENT_AGGREGATION_INTERVAL=300
+
+# Cache timeout in seconds
+SENTIMENT_CACHE_TIMEOUT=300
+
+# =============================================================================
+# ALERT CONFIGURATION
+# =============================================================================
+# Sentiment spike threshold for alerts
+SENTIMENT_SPIKE_THRESHOLD=0.3
+
+# Webhook URL for alerts (optional)
+SENTIMENT_WEBHOOK_URL=your_webhook_url_here
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# 1. Copy this file to .env.sentiment
+# 2. Fill in your actual API keys
+# 3. The system will work with minimal configuration (Redis + Database)
+# 4. Additional APIs improve sentiment accuracy and coverage
+# 5. Keep your API keys secure and never commit them to version control

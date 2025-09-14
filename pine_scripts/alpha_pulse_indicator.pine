@@ -1,0 +1,139 @@
+//@version=5
+indicator("AlphaPulse Multi-Strategy Indicator", overlay=true)
+
+// Input parameters
+ema_short = input.int(12, "EMA Short Period", minval=1)
+ema_long = input.int(26, "EMA Long Period", minval=1)
+rsi_period = input.int(14, "RSI Period", minval=1)
+rsi_overbought = input.int(70, "RSI Overbought", minval=50, maxval=100)
+rsi_oversold = input.int(30, "RSI Oversold", minval=0, maxval=50)
+bb_period = input.int(20, "Bollinger Bands Period", minval=1)
+bb_std = input.float(2.0, "Bollinger Bands Std Dev", minval=0.1, maxval=5.0)
+atr_period = input.int(14, "ATR Period", minval=1)
+volume_threshold = input.float(1.5, "Volume Threshold", minval=0.1)
+
+// Calculate indicators
+ema_fast = ta.ema(close, ema_short)
+ema_slow = ta.ema(close, ema_long)
+rsi = ta.rsi(close, rsi_period)
+[bb_upper, bb_middle, bb_lower] = ta.bb(close, bb_period, bb_std)
+atr = ta.atr(atr_period)
+macd_line = ta.ema(close, 12) - ta.ema(close, 26)
+macd_signal = ta.ema(macd_line, 9)
+macd_histogram = macd_line - macd_signal
+
+// Volume analysis
+volume_avg = ta.sma(volume, 20)
+volume_ratio = volume / volume_avg
+
+// Market regime detection
+atr_ratio = atr / ta.sma(atr, 20)
+is_volatile = atr_ratio > 1.2
+is_ranging = atr_ratio < 0.8
+
+// Trend following signals
+ema_bullish = ema_fast > ema_slow
+ema_bearish = ema_fast < ema_slow
+macd_bullish = macd_line > macd_signal and macd_histogram > 0
+macd_bearish = macd_line < macd_signal and macd_histogram < 0
+
+// Mean reversion signals
+rsi_oversold_signal = rsi < rsi_oversold
+rsi_overbought_signal = rsi > rsi_overbought
+bb_lower_touch = close <= bb_lower
+bb_upper_touch = close >= bb_upper
+
+// Breakout signals
+bb_breakout_up = close > bb_upper and volume_ratio > volume_threshold
+bb_breakout_down = close < bb_lower and volume_ratio > volume_threshold
+
+// Signal strength calculation
+trend_strength = math.abs(ema_fast - ema_slow) / atr
+rsi_strength = math.abs(rsi - 50) / 50
+volume_strength = math.min(volume_ratio / volume_threshold, 3.0)
+
+// Multi-strategy signal generation
+buy_signal = false
+sell_signal = false
+signal_strength = 0.0
+
+// Trend following strategy
+if ema_bullish and macd_bullish and volume_ratio > 1.0
+    buy_signal := true
+    signal_strength := math.min(trend_strength * volume_strength, 1.0)
+
+if ema_bearish and macd_bearish and volume_ratio > 1.0
+    sell_signal := true
+    signal_strength := math.min(trend_strength * volume_strength, 1.0)
+
+// Mean reversion strategy (only in ranging markets)
+if is_ranging
+    if rsi_oversold_signal and bb_lower_touch and volume_ratio > 0.8
+        buy_signal := true
+        signal_strength := math.max(signal_strength, rsi_strength * volume_strength)
+    
+    if rsi_overbought_signal and bb_upper_touch and volume_ratio > 0.8
+        sell_signal := true
+        signal_strength := math.max(signal_strength, rsi_strength * volume_strength)
+
+// Breakout strategy (only in volatile markets)
+if is_volatile
+    if bb_breakout_up
+        buy_signal := true
+        signal_strength := math.max(signal_strength, volume_strength)
+    
+    if bb_breakout_down
+        sell_signal := true
+        signal_strength := math.max(signal_strength, volume_strength)
+
+// Signal classification
+signal_type = "hold"
+if buy_signal
+    signal_type := "buy"
+else if sell_signal
+    signal_type := "sell"
+
+// Signal strength classification
+strength_type = "weak"
+if signal_strength > 0.7
+    strength_type := "strong"
+else if signal_strength > 0.4
+    strength_type := "medium"
+
+// Plotting
+plot(ema_fast, "EMA Fast", color=color.blue, linewidth=1)
+plot(ema_slow, "EMA Slow", color=color.red, linewidth=1)
+plot(bb_upper, "BB Upper", color=color.gray, linewidth=1)
+plot(bb_lower, "BB Lower", color=color.gray, linewidth=1)
+
+// Plot signals
+plotshape(buy_signal, "Buy Signal", shape.triangleup, location.belowbar, color.green, size=size.small)
+plotshape(sell_signal, "Sell Signal", shape.triangledown, location.abovebar, color.red, size=size.small)
+
+// Background color for market regime
+bgcolor(is_volatile ? color.new(color.orange, 90) : is_ranging ? color.new(color.blue, 90) : na)
+
+// Alert conditions
+alertcondition(buy_signal, "AlphaPulse Buy Signal", "Buy signal generated for {{ticker}}")
+alertcondition(sell_signal, "AlphaPulse Sell Signal", "Sell signal generated for {{ticker}}")
+
+// Webhook data for external integration
+if buy_signal or sell_signal
+    webhook_data = {
+        "symbol": syminfo.ticker,
+        "signal": signal_type,
+        "price": close,
+        "strategy": "alpha_pulse_multi",
+        "strength": strength_type,
+        "confidence": signal_strength,
+        "timestamp": time,
+        "metadata": {
+            "ema_fast": ema_fast,
+            "ema_slow": ema_slow,
+            "rsi": rsi,
+            "atr": atr,
+            "volume_ratio": volume_ratio,
+            "market_regime": is_volatile ? "volatile" : is_ranging ? "ranging" : "trending"
+        }
+    }
+    // Note: Webhook URL would be configured in TradingView alerts

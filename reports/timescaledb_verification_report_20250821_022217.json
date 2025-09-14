@@ -1,0 +1,281 @@
+{
+  "verification_timestamp": "2025-08-21T02:22:17.451658",
+  "success_rate": 100.0,
+  "total_tests": 10,
+  "successful_tests": 10,
+  "failed_tests": 0,
+  "results": {
+    "hypertables": {
+      "total_hypertables": 7,
+      "hypertables": [
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "raw_news_content",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 1,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "economic_events_calendar",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 1,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "crypto_events",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 0,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "news_event_correlation",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 0,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "breaking_news_alerts",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 1,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "news_impact_analysis",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 0,
+          "compression_enabled": false
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "multi_language_news",
+          "owner": "alpha_emon",
+          "num_dimensions": 1,
+          "num_chunks": 0,
+          "compression_enabled": false
+        }
+      ],
+      "dimensions": [
+        {
+          "hypertable_name": "raw_news_content",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "economic_events_calendar",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "crypto_events",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "news_event_correlation",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "breaking_news_alerts",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "news_impact_analysis",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        },
+        {
+          "hypertable_name": "multi_language_news",
+          "dimension_number": 1,
+          "column_name": "timestamp",
+          "column_type": "timestamp with time zone"
+        }
+      ]
+    },
+    "data_insertion": {
+      "raw_news_content": true,
+      "economic_events_calendar": true,
+      "breaking_news_alerts": true
+    },
+    "chunks": {
+      "total_chunks": 3,
+      "chunks_by_table": {
+        "raw_news_content": [
+          {
+            "hypertable_name": "raw_news_content",
+            "chunk_name": "_hyper_131_15385_chunk",
+            "primary_dimension": "timestamp",
+            "primary_dimension_type": "timestamp with time zone",
+            "range_start": "2025-08-20 20:00:00+00:00",
+            "range_end": "2025-08-20 21:00:00+00:00",
+            "is_compressed": false,
+            "chunk_tablespace": null
+          }
+        ],
+        "economic_events_calendar": [
+          {
+            "hypertable_name": "economic_events_calendar",
+            "chunk_name": "_hyper_132_15386_chunk",
+            "primary_dimension": "timestamp",
+            "primary_dimension_type": "timestamp with time zone",
+            "range_start": "2025-08-20 00:00:00+00:00",
+            "range_end": "2025-08-21 00:00:00+00:00",
+            "is_compressed": false,
+            "chunk_tablespace": null
+          }
+        ],
+        "breaking_news_alerts": [
+          {
+            "hypertable_name": "breaking_news_alerts",
+            "chunk_name": "_hyper_135_15387_chunk",
+            "primary_dimension": "timestamp",
+            "primary_dimension_type": "timestamp with time zone",
+            "range_start": "2025-08-20 20:00:00+00:00",
+            "range_end": "2025-08-20 20:30:00+00:00",
+            "is_compressed": false,
+            "chunk_tablespace": null
+          }
+        ]
+      }
+    },
+    "timescaledb_functions": {
+      "time_bucket": true,
+      "first_last": true,
+      "histogram": true
+    },
+    "policies": {
+      "retention_policies": [],
+      "compression_policies": [
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candles"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candles"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candles"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candles"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_data"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_data"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_data"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_patterns"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_patterns"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "candlestick_patterns"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "market_data"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "market_data"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "redis_pubsub_events"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "redis_pubsub_events"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "redis_pubsub_events"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "signals"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "signals"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "signals"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "signals"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "websocket_performance"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "websocket_performance"
+        },
+        {
+          "hypertable_schema": "public",
+          "hypertable_name": "websocket_performance"
+        }
+      ]
+    },
+    "performance": {
+      "large_range_query": {
+        "duration_ms": 0.843,
+        "success": true,
+        "result_count": 1
+      },
+      "time_bucket_aggregation": {
+        "duration_ms": 0.558,
+        "success": true,
+        "result_count": 1
+      },
+      "multi_table_join": {
+        "duration_ms": 2.927,
+        "success": true,
+        "result_count": 2
+      }
+    }
+  },
+  "summary": {
+    "hypertables_created": 7,
+    "chunks_created": 3,
+    "retention_policies": 0,
+    "compression_policies": 22
+  }
+}

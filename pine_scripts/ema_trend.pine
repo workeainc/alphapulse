@@ -1,0 +1,125 @@
+//@version=5
+indicator("AlphaPulse EMA Trend Strategy", overlay=true)
+
+// Input parameters
+ema_short = input.int(12, "EMA Short Period", minval=1)
+ema_long = input.int(26, "EMA Long Period", minval=1)
+macd_fast = input.int(12, "MACD Fast Period", minval=1)
+macd_slow = input.int(26, "MACD Slow Period", minval=1)
+macd_signal = input.int(9, "MACD Signal Period", minval=1)
+volume_threshold = input.float(1.2, "Volume Threshold", minval=0.1)
+atr_period = input.int(14, "ATR Period", minval=1)
+
+// Calculate EMAs
+ema_fast = ta.ema(close, ema_short)
+ema_slow = ta.ema(close, ema_long)
+
+// Calculate MACD
+macd_line = ta.ema(close, macd_fast) - ta.ema(close, macd_slow)
+macd_signal_line = ta.ema(macd_line, macd_signal)
+macd_histogram = macd_line - macd_signal_line
+
+// Calculate ATR for volatility
+atr = ta.atr(atr_period)
+
+// Volume analysis
+volume_avg = ta.sma(volume, 20)
+volume_ratio = volume / volume_avg
+
+// Trend conditions
+ema_bullish = ema_fast > ema_slow
+ema_bearish = ema_fast < ema_slow
+ema_cross_up = ta.crossover(ema_fast, ema_slow)
+ema_cross_down = ta.crossunder(ema_fast, ema_slow)
+
+// MACD conditions
+macd_bullish = macd_line > macd_signal_line and macd_histogram > 0
+macd_bearish = macd_line < macd_signal_line and macd_histogram < 0
+macd_cross_up = ta.crossover(macd_line, macd_signal_line)
+macd_cross_down = ta.crossunder(macd_line, macd_signal_line)
+
+// Trend strength
+trend_strength = math.abs(ema_fast - ema_slow) / atr
+volume_strength = math.min(volume_ratio / volume_threshold, 2.0)
+
+// Signal generation
+buy_signal = false
+sell_signal = false
+signal_strength = 0.0
+
+// Strong trend following signals
+if ema_bullish and macd_bullish and volume_ratio > volume_threshold
+    buy_signal := true
+    signal_strength := math.min(trend_strength * volume_strength, 1.0)
+
+if ema_bearish and macd_bearish and volume_ratio > volume_threshold
+    sell_signal := true
+    signal_strength := math.min(trend_strength * volume_strength, 1.0)
+
+// Crossover signals (additional confirmation)
+if ema_cross_up and macd_cross_up and volume_ratio > volume_threshold
+    buy_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+if ema_cross_down and macd_cross_down and volume_ratio > volume_threshold
+    sell_signal := true
+    signal_strength := math.max(signal_strength, 0.8)
+
+// Signal classification
+signal_type = "hold"
+if buy_signal
+    signal_type := "buy"
+else if sell_signal
+    signal_type := "sell"
+
+// Signal strength classification
+strength_type = "weak"
+if signal_strength > 0.7
+    strength_type := "strong"
+else if signal_strength > 0.4
+    strength_type := "medium"
+
+// Plotting
+plot(ema_fast, "EMA Fast", color=color.blue, linewidth=2)
+plot(ema_slow, "EMA Slow", color=color.red, linewidth=2)
+
+// Plot MACD on separate pane
+macd_color = macd_line > macd_signal_line ? color.green : color.red
+plot(macd_line, "MACD Line", color=macd_color, display=display.none)
+plot(macd_signal_line, "MACD Signal", color=color.orange, display=display.none)
+
+// Plot signals
+plotshape(buy_signal, "Buy Signal", shape.triangleup, location.belowbar, color.green, size=size.normal)
+plotshape(sell_signal, "Sell Signal", shape.triangledown, location.abovebar, color.red, size=size.normal)
+
+// Plot crossovers
+plotshape(ema_cross_up, "EMA Cross Up", shape.circle, location.belowbar, color.lime, size=size.tiny)
+plotshape(ema_cross_down, "EMA Cross Down", shape.circle, location.abovebar, color.maroon, size=size.tiny)
+
+// Background color for trend
+bgcolor(ema_bullish ? color.new(color.green, 95) : ema_bearish ? color.new(color.red, 95) : na)
+
+// Alert conditions
+alertcondition(buy_signal, "EMA Trend Buy Signal", "EMA Trend buy signal generated for {{ticker}}")
+alertcondition(sell_signal, "EMA Trend Sell Signal", "EMA Trend sell signal generated for {{ticker}}")
+
+// Webhook data
+if buy_signal or sell_signal
+    webhook_data = {
+        "symbol": syminfo.ticker,
+        "signal": signal_type,
+        "price": close,
+        "strategy": "ema_trend",
+        "strength": strength_type,
+        "confidence": signal_strength,
+        "timestamp": time,
+        "metadata": {
+            "ema_fast": ema_fast,
+            "ema_slow": ema_slow,
+            "macd_line": macd_line,
+            "macd_signal": macd_signal_line,
+            "atr": atr,
+            "volume_ratio": volume_ratio,
+            "trend_strength": trend_strength
+        }
+    }

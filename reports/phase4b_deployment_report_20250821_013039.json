@@ -1,0 +1,53 @@
+{
+  "phase": "4B",
+  "deployment_start": "2025-08-21T01:30:32.921582",
+  "components_tested": [
+    "ml_feature_tables",
+    "self_training_orchestrator",
+    "model_management"
+  ],
+  "success_count": 2,
+  "failure_count": 0,
+  "warnings": [
+    "Insufficient ML feature data"
+  ],
+  "errors": [
+    "Enhanced ML models test: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> directly inherits TypingOnly but has additional attributes {'__firstlineno__', '__static_attributes__'}.",
+    "Online learning test: 'OnlineLearningConfig' object has no attribute 'get'",
+    "Drift detection test: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> directly inherits TypingOnly but has additional attributes {'__firstlineno__', '__static_attributes__'}.",
+    "Prediction serving test: column \"symbol\" of relation \"ml_predictions\" does not exist",
+    "Complete pipeline test: Class <class 'sqlalchemy.sql.elements.SQLCoreOperations'> directly inherits TypingOnly but has additional attributes {'__firstlineno__', '__static_attributes__'}."
+  ],
+  "summary": {},
+  "ml_feature_tables": {
+    "ml_features_ohlcv": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_features_sentiment": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_labels": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_models_metadata": {
+      "exists": true,
+      "record_count": 0,
+      "has_data": false
+    },
+    "ml_predictions": {
+      "exists": true,
+      "record_count": 13812,
+      "has_data": true
+    }
+  },
+  "deployment_end": "2025-08-21T01:30:39.149665",
+  "deployment_duration_seconds": 6.228083,
+  "total_components": 3,
+  "success_rate": 66.66666666666666
+}

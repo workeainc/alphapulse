@@ -1,0 +1,28 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "alphapulse",
+    "username": "alpha_emon",
+    "password": "Emon_@17711"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "password": null
+  },
+  "symbols": ["BTCUSDT", "ETHUSDT", "ADAUSDT", "DOTUSDT"],
+  "timeframes": ["1m", "5m", "15m", "1h"],
+  "performance": {
+    "max_workers": 4,
+    "confidence_threshold": 0.7,
+    "processing_batch_size": 100
+  },
+  "deployment": {
+    "install_dependencies": true,
+    "run_migrations": true,
+    "create_indexes": true,
+    "start_services": true,
+    "health_check": true
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "timestamp": "2025-08-15T09:47:00.351342",
+  "database_url": "sqlite:///test_alphapulse.db",
+  "existing_tables_count": 1,
+  "required_tables_count": 3,
+  "existing_structure": {
+    "alembic_version": {
+      "columns": [
+        {
+          "name": "version_num",
+          "type": "VARCHAR(32)",
+          "nullable": false,
+          "default": null,
+          "primary_key": 1
+        }
+      ],
+      "indexes": [],
+      "foreign_keys": []
+    }
+  },
+  "required_structure": {
+    "signals": {
+      "description": "Trading signals table for storing generated signals",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "symbol",
+          "type": "VARCHAR(20)",
+          "nullable": false
+        },
+        {
+          "name": "timeframe",
+          "type": "VARCHAR(10)",
+          "nullable": false
+        },
+        {
+          "name": "direction",
+          "type": "VARCHAR(10)",
+          "nullable": false
+        },
+        {
+          "name": "confidence",
+          "type": "FLOAT",
+          "nullable": false
+        },
+        {
+          "name": "tp1",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp2",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp3",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "tp4",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "sl",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true,
+          "default": "pending"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_signals_symbol_timeframe_timestamp",
+          "columns": [
+            "symbol",
+            "timeframe",
+            "timestamp"
+          ]
+        }
+      ]
+    },
+    "logs": {
+      "description": "False positive logs for signal validation feedback",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "pattern_type",
+          "type": "VARCHAR(50)",
+          "nullable": false
+        },
+        {
+          "name": "confidence_score",
+          "type": "FLOAT",
+          "nullable": false
+        },
+        {
+          "name": "volume_context",
+          "type": "JSON",
+          "nullable": true
+        },
+        {
+          "name": "trend_context",
+          "type": "JSON",
+          "nullable": true
+        },
+        {
+          "name": "outcome",
+          "type": "VARCHAR(20)",
+          "nullable": true
+        },
+        {
+          "name": "timestamp",
+          "type": "DATETIME",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_logs_timestamp",
+          "columns": [
+            "timestamp"
+          ]
+        }
+      ]
+    },
+    "feedback": {
+      "description": "Signal feedback and outcomes",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "signal_id",
+          "type": "INTEGER",
+          "nullable": false
+        },
+        {
+          "name": "market_outcome",
+          "type": "FLOAT",
+          "nullable": true
+        },
+        {
+          "name": "notes",
+          "type": "TEXT",
+          "nullable": true
+        }
+      ],
+      "foreign_keys": [
+        {
+          "constrained_columns": [
+            "signal_id"
+          ],
+          "referred_table": "signals",
+          "referred_columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  },
+  "comparison": {
+    "missing_tables": [
+      {
+        "table": "signals",
+        "description": "Trading signals table for storing generated signals"
+      },
+      {
+        "table": "logs",
+        "description": "False positive logs for signal validation feedback"
+      },
+      {
+        "table": "feedback",
+        "description": "Signal feedback and outcomes"
+      }
+    ],
+    "existing_tables": [],
+    "mismatched_tables": [],
+    "recommendations": [
+      "Create 3 missing tables: signals, logs, feedback"
+    ]
+  },
+  "migration_plan": "## Missing Tables to Create:\n- signals: Trading signals table for storing generated signals\n- logs: False positive logs for signal validation feedback\n- feedback: Signal feedback and outcomes",
+  "summary": {
+    "total_tables": 1,
+    "missing_tables": 3,
+    "mismatched_tables": 0,
+    "compatible_tables": 0
+  }
+}

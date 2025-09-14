@@ -1,0 +1,42 @@
+{
+  "benchmark_id": "benchmark_20250813063605678574",
+  "test_name": "basic_benchmark_test",
+  "scenario": "basic_test",
+  "timestamp": "2025-08-13T06:36:05.678610",
+  "execution_time_ms": 51.16701126098633,
+  "memory_usage_mb": 0.35546875,
+  "cpu_utilization": 0.0,
+  "throughput_ops_per_sec": 1954.4227712142726,
+  "metadata": {
+    "iterations": 2,
+    "total_iterations": 2,
+    "execution_time_stats": {
+      "mean": 51.16701126098633,
+      "median": 51.16701126098633,
+      "min": 50.93979835510254,
+      "max": 51.39422416687012,
+      "stdev": 0.3213275730470561
+    },
+    "memory_stats": {
+      "mean": 0.35546875,
+      "median": 0.35546875,
+      "min": 0.35546875,
+      "max": 0.35546875,
+      "stdev": 0.0
+    },
+    "cpu_stats": {
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "stdev": 0.0
+    },
+    "throughput_stats": {
+      "mean": 1954.4227712142726,
+      "median": 1954.4227712142726,
+      "min": 1945.7439356475834,
+      "max": 1963.101606780962,
+      "stdev": 12.273726964017936
+    }
+  }
+}
