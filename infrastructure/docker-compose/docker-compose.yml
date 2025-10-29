@@ -1,0 +1,98 @@
+# Docker Compose for AlphaPulse Monorepo
+version: '3.8'
+
+services:
+  # PostgreSQL Database with TimescaleDB
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: alphapulse_postgres
+    environment:
+      POSTGRES_DB: alphapulse
+      POSTGRES_USER: alpha_emon
+      POSTGRES_PASSWORD: Emon_@17711
+    ports:
+      - "55433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alpha_emon -d alphapulse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: alphapulse_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - alphapulse_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Backend API
+  backend:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.backend
+    container_name: alphapulse_backend
+    environment:
+      - DATABASE_URL=postgresql://alpha_emon:Emon_@17711@postgres:5432/alphapulse
+      - REDIS_URL=redis://redis:6379
+      - DEBUG=true
+      - PYTHONPATH=/app/apps/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - alphapulse_network
+    restart: unless-stopped
+    volumes:
+      - ../../apps/backend:/app/apps/backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Dashboard
+  web:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.web
+    container_name: alphapulse_web
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - alphapulse_network
+    restart: unless-stopped
+    volumes:
+      - ../../apps/web:/app/apps/web
+      - ../../packages:/app/packages
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+
+networks:
+  alphapulse_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,43 @@
+{
+  "name": "alphapulse-monorepo",
+  "version": "2.0.0",
+  "description": "AlphaPulse Signal Analysis Engine - Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:backend": "cd apps/backend && python main.py",
+    "dev:web": "turbo run dev --filter=web",
+    "build": "turbo run build",
+    "build:backend": "cd apps/backend && python -m compileall .",
+    "build:web": "turbo run build --filter=web",
+    "test": "turbo run test",
+    "test:backend": "cd apps/backend && pytest",
+    "test:web": "turbo run test --filter=web",
+    "lint": "turbo run lint",
+    "lint:backend": "cd apps/backend && flake8 app/ ai/ strategies/",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "docker:build": "docker-compose -f infrastructure/docker-compose/docker-compose.yml build",
+    "docker:up": "docker-compose -f infrastructure/docker-compose/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f infrastructure/docker-compose/docker-compose.yml down",
+    "db:migrate": "cd apps/backend && python database/migrations/rename_trades_to_recommendations.py",
+    "db:up": "docker-compose -f infrastructure/docker-compose/docker-compose.yml up -d postgres",
+    "db:down": "docker-compose -f infrastructure/docker-compose/docker-compose.yml stop postgres",
+    "setup": "pnpm install && cd apps/backend && pip install -r requirements.txt",
+    "postinstall": "echo 'Monorepo dependencies installed. Run pnpm setup to install Python deps.'"
+  },
+  "devDependencies": {
+    "turbo": "^1.11.0",
+    "prettier": "^3.1.0",
+    "@types/node": "^20.8.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.10.0"
+}
+

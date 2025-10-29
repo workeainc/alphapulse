@@ -1,6 +1,0 @@
-[33ma9794d4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Security fix: Remove hardcoded API keys and replace with environment variables
-[33m900bb9c[m first commit
-[33m610735b[m Complete AlphaPulse system reorganization and cleanup - Frontend routing fix, file consolidation, duplicate analysis, and system optimization
-[33mc20934a[m Complete AlphaPulse Trading Bot Implementation - All 5 Data Quality Phases + Advanced Pattern Detection Framework
-[33m866488c[m Add comprehensive CI/CD pipeline for Vercel deployment - GitHub Actions workflow with automated testing, security scanning, and deployment - Setup scripts for Windows (PowerShell) and Unix (Bash) - Complete testing infrastructure for both backend and frontend - Comprehensive documentation and troubleshooting guides
-[33ma6e9ee1[m Initial commit: AlphaPulse Trading Bot - Complete A to Z implementation with Vercel deployment ready

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**", "build/**", "__pycache__/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**", ".pytest_cache/**"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "migrate": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
+

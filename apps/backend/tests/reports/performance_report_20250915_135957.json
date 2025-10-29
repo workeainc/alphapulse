@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-09-15T20:59:57.989815+00:00",
+  "performance_score": 85.0,
+  "system_metrics": {
+    "cpu_percent": 19.3,
+    "memory_mb": 19107.890625,
+    "disk_read_mb": 40349.138671875,
+    "disk_write_mb": 108097.01513671875,
+    "memory_percent": 39.1
+  },
+  "database_metrics": {
+    "total_records": 312,
+    "table_count": 4,
+    "recent_queries": 300,
+    "active_connections": 1,
+    "cache_hit_ratio": 0.95,
+    "slow_queries": 0
+  },
+  "query_performance": {
+    "simple_select": 0.011682510375976562,
+    "complex_join": 0.04220008850097656,
+    "time_based_query": 0.06842613220214844,
+    "indexed_query": 0.43654441833496094
+  },
+  "slow_queries": [],
+  "recommendations": [
+    "High memory usage detected. Consider increasing memory or optimizing data structures."
+  ],
+  "uptime_hours": 0.0002797475126054552
+}

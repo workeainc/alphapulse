@@ -1,0 +1,21 @@
+{
+  "name": "@alphapulse/backend",
+  "version": "2.0.0",
+  "description": "AlphaPulse Backend - Signal Analysis Engine API",
+  "private": true,
+  "scripts": {
+    "dev": "python main.py",
+    "test": "pytest tests/ -v",
+    "test:coverage": "pytest tests/ -v --cov=app --cov=ai --cov=strategies --cov-report=html",
+    "lint": "flake8 src/",
+    "lint:fix": "black src/ && isort src/",
+    "migrate": "python database/migrations/rename_trades_to_recommendations.py",
+    "migrate:down": "python database/migrations/rename_trades_to_recommendations.py down",
+    "db:init": "python database/migrations/init_db.py",
+    "clean": "find . -type d -name __pycache__ -exec rm -rf {} + || true"
+  },
+  "engines": {
+    "python": ">=3.9"
+  }
+}
+

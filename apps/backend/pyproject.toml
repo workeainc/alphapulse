@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alphapulse-backend"
+version = "2.0.0"
+description = "AlphaPulse Signal Analysis Engine - Backend API"
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+authors = [
+    {name = "AlphaPulse Team", email = "support@alphapulse.com"}
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+# Core dependencies are managed in requirements.txt for now
+# Future: migrate to pyproject.toml dependencies
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.1",
+]
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.sql", "*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=src --cov-report=html --cov-report=term"
+
+[tool.black]
+line-length = 120
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  | archived
+  | __pycache__
+  | .pytest_cache
+  | .venv
+  | venv
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+skip_gitignore = true
+skip = ["archived", "__pycache__", ".pytest_cache", "venv"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+

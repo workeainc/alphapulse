@@ -1,4 +1,4 @@
-# 🚀 AlphaPulse Trading Bot
+# 🚀 AlphaPulse - Signal Analysis Engine
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 ![TimescaleDB](https://img.shields.io/badge/TimescaleDB-15+-blue?style=for-the-badge&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker)
 
-**Enterprise-Grade AI-Powered Trading Signal System**
+**Enterprise-Grade AI-Powered Signal Analysis & Recommendation Engine**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Security](https://img.shields.io/badge/Security-Hardened-green.svg)](https://github.com/workeainc/alphapulse)
@@ -41,11 +41,30 @@
 
 ## 🎯 Overview
 
-**AlphaPulse** is a sophisticated, enterprise-grade algorithmic trading system designed for high-frequency cryptocurrency trading. Built with modern microservices architecture, it combines real-time market data analysis, advanced machine learning models, and multi-strategy decision making to deliver high-confidence trading signals with **<100ms latency** and **75-85% accuracy**.
+**AlphaPulse** is a sophisticated, enterprise-grade signal analysis and recommendation engine designed for cryptocurrency market intelligence. Built with modern microservices architecture, it combines real-time market data analysis, advanced machine learning models, and multi-strategy decision making to deliver high-confidence trading signal recommendations with **<100ms latency** and **75-85% accuracy**.
 
 ### 🎪 Core Philosophy
 
-AlphaPulse operates on the principle of **consensus-based decision making**, where multiple independent analysis engines must agree before generating a signal. This approach significantly reduces false positives and increases signal reliability.
+AlphaPulse operates on the principle of **consensus-based decision making**, where multiple independent analysis engines must agree before generating a signal recommendation. This approach significantly reduces false positives and increases signal reliability.
+
+### ⚠️ Important: Analysis Engine, Not Execution Platform
+
+**AlphaPulse provides signal analysis and recommendations - it does NOT execute trades.**
+
+**What AlphaPulse DOES:**
+- ✅ Real-time market data analysis
+- ✅ High-confidence signal generation
+- ✅ Risk parameter recommendations (SL/TP/position sizing)
+- ✅ ML-based pattern detection and validation
+- ✅ Alerts and notifications for signal opportunities
+
+**What AlphaPulse DOES NOT DO:**
+- ❌ Execute trades on exchanges
+- ❌ Manage real positions
+- ❌ Place orders automatically
+- ❌ Handle exchange trading credentials
+
+**Users maintain full control:** You review recommendations and execute trades manually on your preferred exchange.
 
 ### 🎯 Target Performance Metrics
 
@@ -73,12 +92,12 @@ AlphaPulse operates on the principle of **consensus-based decision making**, whe
 - **Volume Analysis**: Advanced volume profile and flow analysis
 - **Order Book Analysis**: Liquidity and market depth insights
 
-### 🎯 **Signal Generation Engine**
+### 🎯 **Signal Recommendation Engine**
 - **Multi-Strategy Framework**: Trend following, mean reversion, breakout detection
 - **Confidence Scoring**: ML-based signal quality assessment
-- **Risk Management**: Dynamic position sizing and stop-loss optimization
+- **Risk Recommendations**: Suggested position sizing, stop-loss, and take-profit levels
 - **Backtesting**: Comprehensive historical performance analysis
-- **Paper Trading**: Risk-free strategy validation
+- **Outcome Tracking**: Hypothetical signal validation for ML improvement
 
 ### 🏗️ **Enterprise Architecture**
 - **Microservices Design**: Scalable, fault-tolerant architecture
@@ -114,7 +133,7 @@ graph TB
         G --> H[ML Pipeline]
         D --> H
         H --> I[Signal Generator]
-        I --> J[Risk Manager]
+        I --> J[Risk Analyzer]
     end
     
     subgraph "Storage Layer"
@@ -122,11 +141,16 @@ graph TB
         M[Redis Cache] --> N[Signal Store]
     end
     
-    subgraph "Output Layer"
-        J --> O[Signal API]
-        O --> P[Dashboard]
+    subgraph "Recommendation Output"
+        J --> O[Signal Recommendations]
+        O --> P[Dashboard UI]
         O --> Q[Webhooks]
-        O --> R[Alerts]
+        O --> R[Alerts/Notifications]
+    end
+    
+    subgraph "User Action"
+        P --> S[User Reviews]
+        S --> T[Manual Execution on Exchange]
     end
     
     F --> K

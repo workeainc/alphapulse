@@ -1,0 +1,148 @@
+{
+  "timestamp": "2025-09-15T21:02:31.677409+00:00",
+  "summary": {
+    "total_queries": 6,
+    "optimized_queries": 6,
+    "optimization_rate": 100.0,
+    "avg_execution_time_ms": 0.1773834228515625,
+    "avg_optimization_score": 100.0
+  },
+  "query_analyses": [
+    {
+      "name": "ohlcv_simple_select",
+      "execution_time_ms": 0.37980079650878906,
+      "rows_returned": 100,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Ensure WHERE clause columns are indexed.",
+        "Consider adding composite indexes for ORDER BY columns."
+      ],
+      "query_plan": "  SEARCH ohlcv_data USING INDEX idx_ohlcv_symbol_timestamp (symbol=?)"
+    },
+    {
+      "name": "ohlcv_time_range",
+      "execution_time_ms": 0.14352798461914062,
+      "rows_returned": 1,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Full table scan detected. Add appropriate indexes.",
+        "Ensure WHERE clause columns are indexed."
+      ],
+      "query_plan": "  SCAN ohlcv_data USING INDEX idx_ohlcv_symbol_timestamp"
+    },
+    {
+      "name": "ohlcv_volume_analysis",
+      "execution_time_ms": 0.11277198791503906,
+      "rows_returned": 1,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Full table scan detected. Add appropriate indexes.",
+        "Complex GROUP BY with HAVING. Consider filtering in WHERE clause first.",
+        "COUNT(*) operation. Consider using COUNT(column) for better performance.",
+        "Ensure WHERE clause columns are indexed.",
+        "Consider adding composite indexes for ORDER BY columns."
+      ],
+      "query_plan": "  SCAN ohlcv_data USING INDEX idx_ohlcv_symbol_timeframe\n  USE TEMP B-TREE FOR ORDER BY"
+    },
+    {
+      "name": "signals_performance",
+      "execution_time_ms": 0.05054473876953125,
+      "rows_returned": 0,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Full table scan detected. Add appropriate indexes.",
+        "Complex GROUP BY with HAVING. Consider filtering in WHERE clause first.",
+        "COUNT(*) operation. Consider using COUNT(column) for better performance.",
+        "Ensure WHERE clause columns are indexed.",
+        "Consider adding composite indexes for ORDER BY columns."
+      ],
+      "query_plan": "  SCAN s USING INDEX idx_signals_symbol_direction\n  USE TEMP B-TREE FOR ORDER BY"
+    },
+    {
+      "name": "indicators_calculation",
+      "execution_time_ms": 0.09012222290039062,
+      "rows_returned": 3,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Ensure WHERE clause columns are indexed.",
+        "Consider adding composite indexes for ORDER BY columns."
+      ],
+      "query_plan": "  SEARCH ti USING INDEX idx_indicators_timestamp (timestamp>?)\n  USE TEMP B-TREE FOR GROUP BY\n  USE TEMP B-TREE FOR ORDER BY"
+    },
+    {
+      "name": "complex_join_analysis",
+      "execution_time_ms": 0.2875328063964844,
+      "rows_returned": 1,
+      "optimization_score": 100,
+      "is_optimized": true,
+      "recommendations": [
+        "Full table scan detected. Add appropriate indexes.",
+        "Complex GROUP BY with HAVING. Consider filtering in WHERE clause first.",
+        "Outer join detected. Ensure join columns are indexed.",
+        "Ensure WHERE clause columns are indexed.",
+        "Consider adding composite indexes for ORDER BY columns."
+      ],
+      "query_plan": "  SCAN o USING INDEX idx_ohlcv_symbol_timeframe\n  SEARCH s USING INDEX idx_signals_symbol (symbol=?) LEFT-JOIN\n  USE TEMP B-TREE FOR ORDER BY"
+    }
+  ],
+  "slowest_queries": [
+    {
+      "name": "ohlcv_simple_select",
+      "execution_time_ms": 0.37980079650878906,
+      "optimization_score": 100
+    },
+    {
+      "name": "complex_join_analysis",
+      "execution_time_ms": 0.2875328063964844,
+      "optimization_score": 100
+    },
+    {
+      "name": "ohlcv_time_range",
+      "execution_time_ms": 0.14352798461914062,
+      "optimization_score": 100
+    }
+  ],
+  "needs_optimization": [],
+  "index_recommendations": [
+    {
+      "index_name": "ohlcv_symbol_timeframe",
+      "sql": "CREATE INDEX idx_ohlcv_symbol_timeframe ON ohlcv_data (symbol, timeframe)",
+      "reason": "Recommended for ohlcv_symbol_timeframe query patterns"
+    },
+    {
+      "index_name": "ohlcv_timestamp",
+      "sql": "CREATE INDEX idx_ohlcv_timestamp ON ohlcv_data (timestamp)",
+      "reason": "Recommended for ohlcv_timestamp query patterns"
+    },
+    {
+      "index_name": "ohlcv_symbol_timestamp",
+      "sql": "CREATE INDEX idx_ohlcv_symbol_timestamp ON ohlcv_data (symbol, timestamp)",
+      "reason": "Recommended for ohlcv_symbol_timestamp query patterns"
+    },
+    {
+      "index_name": "signals_symbol_direction",
+      "sql": "CREATE INDEX idx_signals_symbol_direction ON signals (symbol, direction)",
+      "reason": "Recommended for signals_symbol_direction query patterns"
+    },
+    {
+      "index_name": "signals_timestamp",
+      "sql": "CREATE INDEX idx_signals_timestamp ON signals (timestamp)",
+      "reason": "Recommended for signals_timestamp query patterns"
+    },
+    {
+      "index_name": "indicators_symbol_name",
+      "sql": "CREATE INDEX idx_indicators_symbol_name ON technical_indicators (symbol, indicator_name)",
+      "reason": "Recommended for indicators_symbol_name query patterns"
+    },
+    {
+      "index_name": "indicators_timestamp",
+      "sql": "CREATE INDEX idx_indicators_timestamp ON technical_indicators (timestamp)",
+      "reason": "Recommended for indicators_timestamp query patterns"
+    }
+  ]
+}

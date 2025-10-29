@@ -1,0 +1,126 @@
+{
+  "timestamp": "2025-09-15T21:03:02.175540+00:00",
+  "summary": {
+    "total_tests": 5,
+    "successful_tests": 4,
+    "failed_tests": 1,
+    "success_rate": 80.0,
+    "avg_execution_time_ms": 457.8122138977051
+  },
+  "test_results": [
+    {
+      "test_name": "Data Pipeline Test",
+      "success": true,
+      "execution_time_ms": 753.4446716308594,
+      "details": {
+        "sample_data_count": 100,
+        "processed_count": 100,
+        "processing_success_rate": 100.0,
+        "pipeline_stats": {
+          "messages_received": 100,
+          "messages_processed": 100,
+          "db_inserts": 100,
+          "errors": 0,
+          "success_rate": 100.0
+        }
+      },
+      "error_message": null
+    },
+    {
+      "test_name": "SDE Signal Generation Test",
+      "success": true,
+      "execution_time_ms": 6.637811660766602,
+      "details": {
+        "signal_generated": true,
+        "signal_details": {
+          "signal_id": "BTCUSDT_1m_20250915_140300",
+          "direction": "SELL",
+          "confidence": 0.75,
+          "strength": 0.65
+        },
+        "integration_stats": {
+          "signals_generated": 1,
+          "signals_stored": 1,
+          "consensus_reached": 1,
+          "consensus_failed": 0,
+          "errors": 0,
+          "consensus_rate": 100.0
+        }
+      },
+      "error_message": null
+    },
+    {
+      "test_name": "Perfect Calculations Test",
+      "success": false,
+      "execution_time_ms": 1.7223358154296875,
+      "details": {},
+      "error_message": "'DynamicSupportResistanceAnalyzer' object has no attribute 'detect_psychological_levels'"
+    },
+    {
+      "test_name": "Multi-Timeframe Analysis Test",
+      "success": true,
+      "execution_time_ms": 1522.1607685089111,
+      "details": {
+        "timeframes_tested": 4,
+        "timeframe_results": {
+          "1m": {
+            "data_points": 50,
+            "processed_count": 50,
+            "indicators_calculated": true
+          },
+          "5m": {
+            "data_points": 50,
+            "processed_count": 50,
+            "indicators_calculated": true
+          },
+          "15m": {
+            "data_points": 50,
+            "processed_count": 50,
+            "indicators_calculated": true
+          },
+          "1h": {
+            "data_points": 50,
+            "processed_count": 50,
+            "indicators_calculated": true
+          }
+        },
+        "multi_timeframe_active": true
+      },
+      "error_message": null
+    },
+    {
+      "test_name": "Signal Quality Assessment Test",
+      "success": true,
+      "execution_time_ms": 5.095481872558594,
+      "details": {
+        "signals_tested": 3,
+        "signal_results": [
+          {
+            "signal_quality": "high",
+            "signal_generated": true,
+            "confidence": 0.75,
+            "strength": 0.65
+          },
+          {
+            "signal_quality": "medium",
+            "signal_generated": false,
+            "confidence": 0,
+            "strength": 0
+          },
+          {
+            "signal_quality": "low",
+            "signal_generated": false,
+            "confidence": 0,
+            "strength": 0
+          }
+        ],
+        "quality_assessment_active": true
+      },
+      "error_message": null
+    }
+  ],
+  "recommendations": [
+    "Address 1 failed tests to ensure system reliability.",
+    "Optimize 1 slow tests for better performance."
+  ]
+}

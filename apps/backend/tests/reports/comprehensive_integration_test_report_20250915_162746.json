@@ -1,0 +1,37 @@
+{
+  "test_summary": {
+    "total_tests": 12,
+    "passed_tests": 7,
+    "failed_tests": 5,
+    "success_rate": 58.333333333333336,
+    "test_timestamp": "2025-09-15T23:27:46.515375+00:00"
+  },
+  "test_results": {
+    "database_connection": true,
+    "table_existence": true,
+    "hypertable_creation": true,
+    "constraints": true,
+    "indexes": true,
+    "permissions": true,
+    "algorithm_integration": false,
+    "psychological_levels": false,
+    "volume_analysis": false,
+    "data_insertion": false,
+    "data_retrieval": false,
+    "performance": true
+  },
+  "performance_metrics": {
+    "total_test_time": 38.038379192352295,
+    "database_operations": 0.0,
+    "algorithm_execution": 0.0,
+    "data_insertion": 0.0,
+    "data_retrieval": 0.0
+  },
+  "recommendations": [
+    "Fix algorithm integration service issues",
+    "Resolve psychological levels analyzer problems",
+    "Fix volume analysis functionality",
+    "Resolve data insertion issues",
+    "Fix data retrieval problems"
+  ]
+}

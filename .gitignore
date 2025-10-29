@@ -192,3 +192,19 @@ secrets.json
 
 # Vercel
 .vercel
+
+# Backend specific
+apps/backend/cache/
+apps/backend/logs/
+apps/backend/htmlcov/
+apps/backend/catboost_info/
+apps/backend/results/
+apps/backend/reports/
+apps/backend/deployments/
+apps/backend/artifacts/
+apps/backend/models/*.model
+apps/backend/models/*.onnx
+apps/backend/ml_models/
+apps/backend/*.log
+apps/backend/*_report_*.json
+apps/backend/alphapulse.log

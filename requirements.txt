@@ -129,6 +129,7 @@ click>=8.1.7
 rich>=13.7.0
 pytz>=2023.3
 schedule>=1.2.0
+apscheduler>=3.10.4  # For learning system scheduled jobs
 
 # =============================================================================
 # TESTING

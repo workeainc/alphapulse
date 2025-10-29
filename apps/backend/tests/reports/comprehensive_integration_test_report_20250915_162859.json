@@ -1,0 +1,33 @@
+{
+  "test_summary": {
+    "total_tests": 12,
+    "passed_tests": 12,
+    "failed_tests": 0,
+    "success_rate": 100.0,
+    "test_timestamp": "2025-09-15T23:28:59.275675+00:00"
+  },
+  "test_results": {
+    "database_connection": true,
+    "table_existence": true,
+    "hypertable_creation": true,
+    "constraints": true,
+    "indexes": true,
+    "permissions": true,
+    "algorithm_integration": true,
+    "psychological_levels": true,
+    "volume_analysis": true,
+    "data_insertion": true,
+    "data_retrieval": true,
+    "performance": true
+  },
+  "performance_metrics": {
+    "total_test_time": 46.17333769798279,
+    "database_operations": 0.0,
+    "algorithm_execution": 0.0,
+    "data_insertion": 0.0,
+    "data_retrieval": 0.0
+  },
+  "recommendations": [
+    "All systems are working correctly - ready for production!"
+  ]
+}

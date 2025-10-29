@@ -1,9 +1,0 @@
-{
-  "deployment_id": "test-deployment-001_rollback",
-  "version": "0.9.0",
-  "environment": "production",
-  "deployed_at": "2025-08-26T23:40:08.832441",
-  "services": [
-    "test-service"
-  ]
-}

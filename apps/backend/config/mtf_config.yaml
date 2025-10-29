@@ -1,0 +1,161 @@
+# Multi-Timeframe (MTF) Entry Configuration
+# Industry-standard configuration for precise trade entries
+
+# MTF Strategy Mappings
+mtf_strategies:
+  # Signal Timeframe -> Entry Timeframe
+  timeframe_mappings:
+    "1d": "4h"    # Daily signals -> 4h entry
+    "4h": "1h"    # 4h signals -> 1h entry
+    "1h": "15m"   # 1h signals -> 15m entry  (DEFAULT)
+    "15m": "5m"   # 15m signals -> 5m entry
+    "5m": "1m"    # 5m signals -> 1m entry
+
+# Entry Strategy Configuration
+entry_strategies:
+  # Priority order (higher = better)
+  priorities:
+    - name: "FIBONACCI_618"
+      confidence_boost: 0.15
+      description: "61.8% Fibonacci retracement (Golden ratio)"
+    - name: "FIBONACCI_50"
+      confidence_boost: 0.10
+      description: "50% Fibonacci retracement"
+    - name: "EMA_9_PULLBACK"
+      confidence_boost: 0.10
+      description: "Pullback to 9 EMA"
+    - name: "EMA_21_PULLBACK"
+      confidence_boost: 0.08
+      description: "Pullback to 21 EMA"
+    - name: "ORDER_BLOCK_LONG"
+      confidence_boost: 0.08
+      description: "Bullish order block retracement"
+    - name: "FIBONACCI_382"
+      confidence_boost: 0.05
+      description: "38.2% Fibonacci retracement"
+    - name: "EMA_50_PULLBACK"
+      confidence_boost: 0.05
+      description: "Pullback to 50 EMA"
+    - name: "MARKET_ENTRY"
+      confidence_boost: 0.00
+      description: "Market entry (no refinement)"
+
+  # Fibonacci levels
+  fibonacci_levels:
+    - 0.236  # 23.6% (shallow)
+    - 0.382  # 38.2% (common)
+    - 0.5    # 50% (mid)
+    - 0.618  # 61.8% (golden ratio - BEST)
+    - 0.786  # 78.6% (deep)
+
+  # EMA periods for pullback detection
+  ema_periods:
+    fast: 9
+    medium: 21
+    slow: 50
+
+  # Order block configuration
+  order_blocks:
+    min_strength_ratio: 2.0  # Next candle must be 2x stronger
+    max_lookback_candles: 20
+    proximity_atr_multiplier: 1.0  # Must be within 1 ATR
+
+# Risk Management
+risk_management:
+  # Stop loss calculation
+  stop_loss:
+    atr_multiplier: 1.5  # Stop at 1.5 ATR from entry
+    min_risk_percent: 0.005  # Minimum 0.5% risk
+    max_risk_percent: 0.03   # Maximum 3% risk
+
+  # Take profit calculation
+  take_profit:
+    tp1_atr_multiplier: 2.0   # TP1 at 2 ATR (R:R 1.33)
+    tp2_atr_multiplier: 3.5   # TP2 at 3.5 ATR (R:R 2.33)
+    tp3_atr_multiplier: 5.0   # TP3 at 5 ATR (R:R 3.33)
+    
+  # Minimum risk:reward ratio
+  min_risk_reward_ratio: 1.5  # Minimum 1.5:1 R:R
+
+# Entry Quality Thresholds
+entry_quality:
+  # Minimum confidence scores
+  min_entry_confidence: 0.60   # Minimum 60% confidence
+  min_signal_confidence: 0.75  # Minimum 75% from 9-head consensus (already set)
+  
+  # Volume confirmation
+  volume_confirmation:
+    enabled: true
+    volume_vs_ma_ratio: 1.2  # Volume must be 1.2x MA
+
+  # EMA alignment bonus
+  ema_alignment:
+    enabled: true
+    confidence_boost: 0.15  # Add 15% confidence if EMAs aligned
+
+  # Proximity bonus
+  proximity:
+    within_0_5_percent: 0.20  # Add 20% confidence if within 0.5%
+    within_1_percent: 0.10    # Add 10% confidence if within 1%
+
+# Signal Generation with MTF
+signal_generation:
+  # Use MTF entry refinement
+  mtf_enabled: true
+  
+  # Default timeframes
+  default_signal_timeframe: "1h"
+  default_entry_timeframe: "15m"
+  
+  # Analysis parameters
+  min_data_candles:
+    signal_timeframe: 200  # 200 candles for trend analysis
+    entry_timeframe: 200   # 200 candles for entry refinement
+  
+  # Cooldown between signals (seconds)
+  signal_cooldown: 1800  # 30 minutes (increased from 5 minutes for MTF)
+  
+  # Minimum indicators for entry analysis
+  min_indicators:
+    ema_9: true
+    ema_21: true
+    atr: true
+    volume_ma: true
+
+# Database Storage
+database:
+  # Store MTF analysis in ai_signals_mtf table
+  store_mtf_signals: true
+  store_entry_history: true
+  store_performance_metrics: true
+  
+  # Compression and retention
+  compress_after_days: 7
+  retain_for_years: 1
+
+# Monitoring
+monitoring:
+  # Track MTF performance
+  track_win_rate_by_strategy: true
+  track_slippage: true
+  track_entry_timing_accuracy: true
+  
+  # Alert thresholds
+  alerts:
+    low_win_rate_percent: 40.0
+    high_slippage_percent: 2.0
+    entry_confidence_drop_percent: 30.0
+
+# Advanced Features
+advanced:
+  # Adaptive strategy selection
+  adaptive_strategy:
+    enabled: false  # Enable after collecting performance data
+    min_sample_size: 100  # Minimum signals before adapting
+    rebalance_interval_days: 7
+  
+  # Machine learning entry prediction
+  ml_entry_prediction:
+    enabled: false  # Future feature
+    model_path: "models/mtf_entry_predictor.onnx"
+
